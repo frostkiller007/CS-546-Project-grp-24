@@ -1,1 +1,1 @@
-# CS-546-Project-grp-24
+# cs-546-project-grp-24

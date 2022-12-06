@@ -1,0 +1,34 @@
+  { 
+  "name": "cs-546-project-grp-24",
+  "version": "1.0.0",
+  "description": "HandOuts",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "seed": "node ./tasks/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frostkiller007/CS-546-Project-grp-24.git"
+  },
+  "author": "Aditya, Aditi, Mihir, Neelakshi, Neel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frostkiller007/CS-546-Project-grp-24/issues"
+  },
+  "homepage": "https://github.com/frostkiller007/CS-546-Project-grp-24#README.md",
+
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "express-session": "^1.17.3",
+    "formidable": "^2.1.1",
+    "handlebars": "^4.7.7",
+    "init": "^0.1.2",
+    "mongodb": "^4.12.1"
+  }
+}

@@ -1,2 +1,1 @@
-# cs-546-p
-roject-grp-24
+# cs-546-project-grp-24

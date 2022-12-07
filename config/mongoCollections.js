@@ -1,4 +1,4 @@
-const dbConnection = require('./mongoConnection');
+const dbConnection = require("./mongoConnection");
 const getCollectionFn = (collection) => {
   let _col = undefined;
 
@@ -12,10 +12,10 @@ const getCollectionFn = (collection) => {
   };
 };
 module.exports = {
-    // DATABASE COLLECTIONS KE NAAM YE RAKHO
-  users: getCollectionFn('users'),
-  posts: getCollectionFn('posts'),
-  comments: getCollectionFn('comments'),
-  chats: getCollectionFn('chats'),
-  reports: getCollectionFn('reports')
+  // DATABASE COLLECTIONS KE NAAM YE RAKHO
+  user: getCollectionFn("user"),
+  post: getCollectionFn("post"),
+  comment: getCollectionFn("comment"),
+  chat: getCollectionFn("chat"),
+  report: getCollectionFn("report"),
 };

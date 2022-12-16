@@ -9,8 +9,8 @@ const valid = require("../helper.js");
 router.route("/").get(async (req, res) => {
   if (req.session.user) {
     //TODO
-    return res.redirect("/homepage");
   }
+  res.redirect("/mainPage");
   //TODO: guest
 });
 
@@ -77,18 +77,14 @@ router
         req.session.user = { Username: userData.usernameInput };
         res.redirect("/homepage");
       } else {
-        return res
-          .status(401)
-          .render("homepage/login", {
-            error: "Provide a valid username and/or password",
-          });
-      }
-    } catch (e) {
-      return res
-        .status(401)
-        .render("homepage/login", {
+        return res.status(401).render("homepage/login", {
           error: "Provide a valid username and/or password",
         });
+      }
+    } catch (e) {
+      return res.status(401).render("homepage/login", {
+        error: "Provide a valid username and/or password",
+      });
     }
   });
 router.route("/logout").get(async (req, res) => {

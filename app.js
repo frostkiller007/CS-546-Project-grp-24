@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
 
-app.use("/public", static);
+// app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

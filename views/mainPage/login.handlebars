@@ -11,8 +11,8 @@
       <!---container_1--->
       <div id="container_2">
       
-        <form id="survey-form">
-          
+        {{!-- <form id="survey-form"> --}}
+        <form action="/user/login" method="POST" id="login-form">
           <label id="email-label">Email</label>
           <input type="email" id="email" name="email" class="form" required placeholder="Insert your email"><br>
           <!---email-->
@@ -21,9 +21,10 @@
           <!---password-->
 
           <br><br>
-          <!---comment-->
+          <!---comment
       
-          <input type="submit" id="submit" name="submit" value="Submit">
+          <input type="submit" id="submit" name="submit" value="Submit">-->
+          <button type="submit" class="submitBtn">Login</button><br>
         </form>
         <!---survey-form--->
       </div>

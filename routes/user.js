@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const data = require('../data');
-const userData = data.user;
-const postData = data.post;
+// const data = require('../data');
+// const userData = data.user; 
+const userData =require('../data/user.js')
+//const postData = data.post;
 const valid = require("../helper.js");
 
 // const { async } = require("seed/lib/seed");
@@ -36,7 +37,7 @@ router
         usersData.city,
         usersData.state,
         //usersData.postID,
-        usersData.password,
+        usersData.password
        // usersData.profilePicture
       );
       // if(newUser){
@@ -47,7 +48,7 @@ router
       // }
       // return res.render("mainPage/login");
       if (newUser.insertedUser) 
-        res.redirect("/homepage");
+        res.render("mainPage/login");
 
     } catch (e) {
       return res
@@ -70,16 +71,16 @@ router
     if (req.session.user) {
       return res.redirect("/mainPage");
     }
-    username = valid.checkUserName(usersData.username);
+    email = valid.checkEmail(usersData.email);
     password = valid.checkPassword(usersData.password);
     try {
-      const loginUser = await usersData.checkUser(
-        usersData.usernameInput,
-        usersData.passwordInput
+      const loginUser = await userData.verifyUser(
+        usersData.email,
+        usersData.password
       );
       if (loginUser) {
-        req.session.AuthCookie = userData.usernameInput;
-        req.session.user = { Username: userData.usernameInput };
+        req.session.AuthCookie = usersData.email;
+        req.session.user = { Username: usersData.email };
         res.redirect("/mainPage");
       } else {
         return res.status(401).render("homepage/login", {

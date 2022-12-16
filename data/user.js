@@ -1,7 +1,9 @@
 const mongoCollections = require('../config/mongoCollections');
-const users = mongoCollections.users;
+const users = mongoCollections.user;
 const {ObjectId} = require('mongodb');
 const valid = require('../helper');
+const bcrypt = require("bcrypt");
+let saltRounds = 10;
 
 const createUser = async(
     userName,
@@ -9,9 +11,9 @@ const createUser = async(
     age,
     city,
     state,
-    postID,
+   // postID,
     password,
-    profilePicture
+   // profilePicture
     ) => {
     userName = valid.checkUserName(userName);
     email = valid.checkEmail(email);
@@ -19,16 +21,15 @@ const createUser = async(
     city = valid.checkCity(city);
     // // // postID = valid.checkPostID(postID);
     password = valid.checkPassword(password);
-    if(profilePicture){
-        valid.checkString(profilePicture,'Profile Photo');
-    }
+    // if(profilePicture){
+    //     valid.checkString(profilePicture,'Profile Photo');
+    // }
 
     const usersCollection = await users();
     let userExist = await usersCollection.findOne({ username: userName });
     if (userExist) {
-    throw { code: 400, err: "Username already exists" };
+      throw { code: 400, err: "Username already exists" };
     }
-
     hashedPassword = await bcrypt.hash(password, saltRounds);
     
     let newUsers = {
@@ -38,8 +39,8 @@ const createUser = async(
         city: city,
         state: state,
         // // postID: postID,
-        password: hashedPassword,
-        profilePicture: profilePicture
+        password: hashedPassword
+        //profilePicture: profilePicture
 
     }
     

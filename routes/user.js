@@ -12,6 +12,7 @@ router.route("/").get(async (req, res) => {
   }
   res.redirect("/mainPage");
   //TODO: guest
+  res.redirect("/mainPage");
 });
 
 router
@@ -19,9 +20,9 @@ router
   .get(async (req, res) => {
     if (req.session.user) {
       //TODO
-      return res.redirect("/homepage");
+      res.redirect("/mainPage");
     }
-    res.render("homepage/register");
+    res.render("mainPage/register");
   })
   .post(async (req, res) => {
     const usersData = req.body;
@@ -43,11 +44,11 @@ router
       //   res.status(400).render('userLogin', {errors: errors,hasErrors: true,title:'Login',
       // errorMessage:'There is already a user with the username! Try to login.'});
       // }
-      return res.render("homepage/login");
+      return res.render("mainPage/login");
     } catch (e) {
       return res
         .status(500)
-        .render("homepage/register", { error: "Internal Server Error" });
+        .render("mainPage/register", { error: "Internal Server Error" });
     }
   });
 
@@ -55,15 +56,15 @@ router
   .route("/login")
   .get(async (req, res) => {
     if (req.session.user) {
-      return res.redirect("/homepage");
+      return res.redirect("/mainPage");
     }
 
-    res.render("homepage/login");
+    res.render("mainPage/login");
   })
   .post(async (req, res) => {
     let usersData = req.body;
     if (req.session.user) {
-      return res.redirect("/homepage");
+      return res.redirect("/mainPage");
     }
     username = valid.checkUserName(usersData.username);
     password = valid.checkPassword(usersData.password);
@@ -75,7 +76,7 @@ router
       if (loginUser) {
         req.session.AuthCookie = userData.usernameInput;
         req.session.user = { Username: userData.usernameInput };
-        res.redirect("/homepage");
+        res.redirect("/mainPage");
       } else {
         return res.status(401).render("homepage/login", {
           error: "Provide a valid username and/or password",
@@ -89,10 +90,10 @@ router
   });
 router.route("/logout").get(async (req, res) => {
   if (req.session.user) {
-    return res.redirect("/homepage");
+    return res.redirect("/mainPage");
   }
   req.session.destroy();
-  return res.redirect("/homepage");
+  return res.redirect("/mainPage");
 });
 
 router
@@ -100,7 +101,7 @@ router
   .get(async (req, res) => {
     let usersData = req.body;
     if (req.session.user) {
-      return res.redirect("/homepage");
+      return res.redirect("/mainPage");
     }
     try {
       const userID = await userData.getUserById(usersData.user);

@@ -83,12 +83,12 @@ router
         req.session.user = { Username: usersData.email };
         res.redirect("/mainPage");
       } else {
-        return res.status(401).render("homepage/login", {
+        return res.status(401).render("mainPage/login", {
           error: "Provide a valid username and/or password",
         });
       }
     } catch (e) {
-      return res.status(401).render("homepage/login", {
+      return res.status(401).render("mainPage/login", {
         error: "Provide a valid username and/or password",
       });
     }
@@ -116,6 +116,8 @@ router
       res.status(404).json({ error: "Invalid user" });
     }
   })
-  .post(async (req, res) => {});
+  .post(async (req, res) => {
+    
+  });
 
 module.exports = router;

@@ -3,6 +3,7 @@ const users = mongoCollections.user;
 const {ObjectId} = require('mongodb');
 const valid = require('../helper');
 const bcrypt = require("bcrypt");
+const { checkEmail } = require('../helper');
 let saltRounds = 10;
 
 const createUser = async(
@@ -67,16 +68,14 @@ const getUserById = async(userId) =>{
 };
 
 const verifyUser = async (
-    username, password
+    email, password
     ) => {
-  
-    username = username.toLowerCase();
-    username = checkUsername(username,'username');
-    password = checkPassword(password,'password');
+    email = valid.checkEmail(email,'email');
+    password = valid.checkPassword(password,'password');
   
     let ret;
     const usersCollection = await users();
-    const userExists = await usersCollection.findOne({ username: username});
+    const userExists = await usersCollection.findOne({ email: email});
     try{
       if(userExists){
         compareToDb = await bcrypt.compare(password, userExists.password);

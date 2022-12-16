@@ -21,7 +21,8 @@ module.exports = {
         if (email.length === 0)
             throw 'Error: email cannot be an empty string or just spaces';
         //(name)@(domain).(extension)(.extension)
-        let regex = /^([A-Za-z0-9_-\.]+)@([a-zA-Z0-9]+).([a-z]{2,10})(.[a-z]{2,10})?$/;
+        //let regex = /^([A-Za-z0-9_-\.]+)@([a-zA-Z0-9]+).([a-z]{2,10})(.[a-z]{2,10})?$/;
+        let regex = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm
         if(!regex.test(email)) throw 'Error: email not valid';
         
         return email;
@@ -30,6 +31,7 @@ module.exports = {
 
     checkAge(age){
         if (!age) throw 'Error: You must provide age';
+        age = Number(age);
         if (typeof age !== 'number') throw 'Error: age must be a number';
         if (!(age%1 === 0)) throw 'Error: Age must be a whole number';
         // 1-15 under age, 16-100 valid age

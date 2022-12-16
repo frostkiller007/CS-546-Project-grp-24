@@ -1,6 +1,6 @@
 const userRoutes = require("./user");
 const postRoutes = require("./post");
-const chatRoutes = require("./chats");
+const chatRoutes = require("./chat");
 const commentRoutes = require("./comment");
 const mainPageRoutes = require("./mainPage");
 const reportRoutes = require("./report");
@@ -22,3 +22,4 @@ const constructorMethod = (app) => {
 };
 
 module.exports = constructorMethod;
+// module.exports = app;

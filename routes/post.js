@@ -1,1 +1,1 @@
-const postData = data.post;
+

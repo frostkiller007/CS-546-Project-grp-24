@@ -12,7 +12,7 @@ const getCollectionFn = (collection) => {
   };
 };
 module.exports = {
-  // DATABASE COLLECTIONS KE NAAM YE RAKHO
+  // DATABASE COLLECTIONS
   user: getCollectionFn("user"),
   post: getCollectionFn("post"),
   comment: getCollectionFn("comment"),

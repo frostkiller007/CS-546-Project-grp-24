@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const data = require("../data");
+const data = require('../data');
 const userData = data.user;
 const postData = data.post;
 const valid = require("../helper.js");
+
 // const { async } = require("seed/lib/seed");
 
 router.route("/").get(async (req, res) => {
-  if (req.session.user) {
+  if (!req.session.user) {
     //TODO
   }
   res.redirect("/mainPage");
@@ -18,33 +19,36 @@ router.route("/").get(async (req, res) => {
 router
   .route("/register")
   .get(async (req, res) => {
-    if (req.session.user) {
+    if (!req.session.user) {
       //TODO
-      res.redirect("/mainPage");
+      return res.render("mainPage/register");
     }
-    res.render("mainPage/register");
+    res.redirect("/mainPage");
   })
   .post(async (req, res) => {
     const usersData = req.body;
     //TODO: validation
     try {
-      const newUser = await usersData.createUser(
+      const newUser = await userData.createUser(
         usersData.username,
         usersData.email,
         usersData.age,
         usersData.city,
         usersData.state,
-        usersData.postID,
+        //usersData.postID,
         usersData.password,
-        usersData.profilePicture
+       // usersData.profilePicture
       );
       // if(newUser){
-      //   res.status(200).render('userLogin',{title:'Login'});
+      //   res.status(200).render('mainPage/login',{title:'Login'});
       // }else{
-      //   res.status(400).render('userLogin', {errors: errors,hasErrors: true,title:'Login',
+      //   res.status(400).render('mainPage/login', {errors: errors,hasErrors: true,title:'Login',
       // errorMessage:'There is already a user with the username! Try to login.'});
       // }
-      return res.render("mainPage/login");
+      // return res.render("mainPage/login");
+      if (newUser.insertedUser) 
+        res.redirect("/homepage");
+
     } catch (e) {
       return res
         .status(500)

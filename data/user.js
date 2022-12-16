@@ -1,6 +1,6 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
-const {ObjectId, Collection} = require('mongodb');
+const {ObjectId} = require('mongodb');
 const valid = require('../helper');
 
 const createUser = async(
@@ -17,37 +17,41 @@ const createUser = async(
     email = valid.checkEmail(email);
     age = valid.checkAge(age);
     city = valid.checkCity(city);
-    postID = valid.checkPostID(postID);
+    // // // postID = valid.checkPostID(postID);
     password = valid.checkPassword(password);
     if(profilePicture){
         valid.checkString(profilePicture,'Profile Photo');
     }
 
-    if(userName.trim().length === 0) throw 'Username entered is an empty string';
-    if(userName.length < 4) throw 'Username must be at least 4 characters long';
-    let regex = /^[A-Za-z0-9]*$/;
-    if(!regex.test(userName)) throw 'Username must be only alphanumeric characters and no spaces';
-
     const usersCollection = await users();
+    let userExist = await usersCollection.findOne({ username: userName });
+    if (userExist) {
+    throw { code: 400, err: "Username already exists" };
+    }
+
+    hashedPassword = await bcrypt.hash(password, saltRounds);
+    
     let newUsers = {
-        userName: userName,
+        username: userName,
         email: email,
         age: age,
         city: city,
         state: state,
-        postID: postID,
-        password: password,
+        // // postID: postID,
+        password: hashedPassword,
         profilePicture: profilePicture
 
     }
     
     const insertInfo = await usersCollection.insertOne(newUsers);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add user';  
-    const newId = insertInfo.insertedId.toString();
-    const user = await getUserById(newId);
+    // const newId = insertInfo.insertedId.toString();
+    // const user = await getUserById(newId);
 
-    return user;
-}
+    // return user;
+    return { insertedUser: true };
+
+};
 
 const getUserById = async(userId) =>{
     userId = valid.checkString(userId,'userId')
@@ -59,7 +63,7 @@ const getUserById = async(userId) =>{
     user._id = user._id.toString();
   
   return user;
-}
+};
 
 const verifyUser = async (
     username, password
@@ -88,8 +92,9 @@ const verifyUser = async (
       return false;
     }
     return ret;
-   };
+};
 module.exports = {
     createUser,
-    getUserById
-  };
+    getUserById,
+    verifyUser
+};

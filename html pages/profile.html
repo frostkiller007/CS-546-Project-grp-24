@@ -7,13 +7,13 @@
     <title>Student Profile Page Design Example</title>
 
     <meta name="author" content="Codeconvey" />
-    <link href="../public/css/profile_pic.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>
 
     <!--Only for demo purpose - no need to add.-->
     <!-- <link rel="stylesheet" href="css/demo.css" /> -->
-    
+    <link rel="stylesheet" href="../public/css/profile_pic.css">
 	    <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body>
@@ -43,8 +43,9 @@
         <div class="card shadow-sm">
           <div class="card-header bg-transparent text-center">
             <input id="file" type="file" onchange="loadFile(event)"/>
-          <img class="profile_img" src="" alt="student dp">
-            <h3 class="username">{{username}}</h3>
+          <img class="profile_img" src="../public/img/username.png" alt="student dp" id="output" width="200">
+            <h3 class="username">{username}</h3>
+            <script src="../public/js/profile_javascript.js"></script>
           </div>
           <div class="card-body">
             <p class="mb-0"><strong class="pr-1"></strong>321000001</p>

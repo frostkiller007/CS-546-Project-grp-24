@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 // const data = require('../data');
-// const userData = data.user; 
-const userData =require('../data/user.js')
+// const userData = data.user;
+const userData = require("../data/user.js");
 //const postData = data.post;
 const valid = require("../helper.js");
 
@@ -46,9 +46,7 @@ router
       // errorMessage:'There is already a user with the username! Try to login.'});
       // }
       // return res.render("mainPage/login");
-      if (newUser.insertedUser) 
-        res.render("mainPage/login");
-
+      if (newUser.insertedUser) res.render("mainPage/login");
     } catch (e) {
       return res
         .status(500)
@@ -72,6 +70,7 @@ router
     }
     email = valid.checkEmail(usersData.email);
     password = valid.checkPassword(usersData.password);
+    let usernameDB = await userData.getUserByEmail(email);
     try {
       const loginUser = await userData.verifyUser(
         usersData.email,
@@ -79,7 +78,8 @@ router
       );
       if (loginUser) {
         req.session.AuthCookie = usersData.email;
-        req.session.user = { Username: usersData.email };
+        req.session.user = { email: usersData.email, username: usernameDB };
+        req.session.login = loginUser.authenticatedUser;
         res.redirect("/mainPage");
       } else {
         return res.status(401).render("mainPage/login", {
@@ -104,19 +104,20 @@ router
   .route("/profile")
   .get(async (req, res) => {
     let usersData = req.body;
+    console.log(req.session);
     if (req.session.user) {
-      return res.redirect("/mainPage");
+      return res.render("mainPage/profile");
     }
+
     try {
-      const userID = await userData.getUserById(usersData.user);
-      const userPosts = await postData.getPostById(userID);
+      res.render("mainPage/profile");
+      // const userID = await userData.getUserById(usersData.user);
+      // const userPosts = await postData.getPostById(userID);
       //Get all post by user
     } catch (e) {
       res.status(404).json({ error: "Invalid user" });
     }
   })
-  .post(async (req, res) => {
-
-  });
+  .post(async (req, res) => {});
 
 module.exports = router;

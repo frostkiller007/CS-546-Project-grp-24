@@ -55,16 +55,40 @@ router.get("/form" , async (req, res) => {
       else
         res.redirect('/homePage');
     }
-    else
-      res.redirect('/homePage');
-  })
-  
-  router.get("/:id", async (req, res) => {
+    await reportData.addReport(userId, postId, reason);
+    res.render("reports/report-form", {
+      success: "Report successfully submitted!",
+      userLogin,
+      "reported-post": post.topic,
+      postId: postId,
+    });
+    return;
+  } catch (e) {
+    res.render("reports/report-form", {
+      message: e,
+      userLogin,
+      "reported-post": post.topic,
+      postId: postId,
+    });
+  }
+});
+
+router.get("/statistic", async (req, res) => {
+  if (req.session && req.session.userId) {
+    let userLogin = await userData.getUserById(req.session.userId);
+    if (userLogin.Admin) {
       try {
-        const report = await reportData.getReport(req.params.id);
-        res.status(200).json(report);
-      } catch (e) {
-        res.status(404).json({ message: "Report not found" });
+        let allPosts = await postData.getAllPost();
+        let allUsers = await userData.getAllUsers();
+        let allComments = await commentData.getAllComments();
+        res.render("statistics/statistics", {
+          allPosts,
+          allUsers,
+          allComments,
+          userLogin,
+        });
+      } catch (error) {
+        res.status(404).send(error);
       }
     });
   
@@ -79,10 +103,7 @@ router.get("/form" , async (req, res) => {
           res.status(404).send(error);
         }
       }
-      else
-        res.redirect('/homePage');
-    }
-    else
-      res.redirect('/homePage');
-  });
-  
+    } else res.redirect("/homePage");
+  } else res.redirect("/homePage");
+});
+module.exports = router;

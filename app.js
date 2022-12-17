@@ -28,11 +28,11 @@ app.use(
   })
 );
 //Authentication Middleware
-app.use("/protected", (req, res, next) => {
+app.use("/mainPage", (req, res, next) => {
   if (!req.session.login) {
     return res
       .status(403)
-      .render("forbiddenAccess", { notLogged: true, title: `403: Forbidden` });
+      .render("mainPage/home", { notLogged: true, title: `403: Forbidden` }); // not loggedin page
   }
   next();
 });

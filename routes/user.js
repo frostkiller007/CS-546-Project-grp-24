@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-// const data = require('../data');
-// const userData = data.user;
 const userData = require("../data/user.js");
-//const postData = data.post;
 const valid = require("../helper.js");
+const bcrypt = require("bcrypt");
+let saltRounds = 10;
 
 // const { async } = require("seed/lib/seed");
 
@@ -100,13 +99,13 @@ router.route("/logout").get(async (req, res) => {
 router
   .route("/profile")
   .get(async (req, res) => {
-    let usersData = req.body;
-    console.log(req.session);
+    const usersData = req.session.user;
     if (req.session.user) {
       try {
-        const userID = await userData.getUserById(usersData.user);
+        const user = await userData.getUserByUsername(usersData.username);
         //const userPosts = await postData.getPostById(userID);
         //Get all post by user
+        return res.render('profilePage/test')
       } catch (e) {
         //TODO
         res.status(404).json({ error: "Invalid user" });
@@ -117,25 +116,63 @@ router
   })
   .post(async (req, res) => {
     let usersData = req.body;
-    const user_ = req.session.user;
-    console.log(req.session)
+    const username = req.session.user.username;
+    
     let userExists;
     try{
-      userExists = await userData.getUserById(user_);
+      userExists = await userData.getUserByUsername(username);
     }catch(e){
       //TODO
       res.status(404).json({error: 'User not found'});
     }
     try{
-      if(username){
+      if(usersData.username){
         if(usersData.username == userExists.username) throw "Error: Updated username must be differnt from previous";
-        const updatedInfo = await userData.updateUsername(usersData.username, usersData.userID);
+        const updatedInfo = await userData.updateUsername(usersData.username, userExists._id);
         if(updatedInfo){
           return res.render("profilePage/profile");
         }
-      
+      }else if(usersData.state){
+        if(usersData.state == userExists.state) throw "Error: Updated state must be differnt from previous";
+        const updatedInfo = await userData.updateState(usersData.state, userExists._id);
+        if(updatedInfo){
+          return res.render("profilePage/profile");
+        }
+      }else if(usersData.city){
+        if(usersData.city == userExists.city) throw "Error: Updated city must be differnt from previous";
+        const updatedInfo = await userData.updateCity(usersData.city, userExists._id);
+        if(updatedInfo){
+          return res.render("profilePage/profile");
+        }
+      }else if(usersData.password){
+        //if(usersData.password !== usersData.confirmPassword) throw "Error: Both passwords should match";
+        hashedPassword = await bcrypt.hash(usersData.password, saltRounds);
+        
+        const updatedInfo = await userData.updatePassword(hashedPassword, userExists._id);
+        if(updatedInfo){
+          return res.render("profilePage/profile");
+        }
       }
     }catch(e){
+    }
+  }),
+
+router
+  .route("/viewProfile")
+  .get(async (req, res) => {
+    if (!req.session.user) {
+      return res.redirect("/mainPage");
+    }
+    else{
+
+    }
+  })
+  .post(async (req, res) => {
+    if (!req.session.user) {
+      return res.redirect("/mainPage");
+    }
+    else{
+      
     }
   })
 module.exports = router;

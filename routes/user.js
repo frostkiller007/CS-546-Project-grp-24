@@ -65,9 +65,6 @@ router
   })
   .post(async (req, res) => {
     let usersData = req.body;
-    if (req.session.user) {
-      return res.redirect("/mainPage");
-    }
     email = valid.checkEmail(usersData.email);
     password = valid.checkPassword(usersData.password);
     let usernameDB = await userData.getUserByEmail(email);
@@ -106,18 +103,39 @@ router
     let usersData = req.body;
     console.log(req.session);
     if (req.session.user) {
-      return res.render("mainPage/profile");
-    }
-
-    try {
-      res.render("mainPage/profile");
-      // const userID = await userData.getUserById(usersData.user);
-      // const userPosts = await postData.getPostById(userID);
-      //Get all post by user
-    } catch (e) {
-      res.status(404).json({ error: "Invalid user" });
+      try {
+        const userID = await userData.getUserById(usersData.user);
+        //const userPosts = await postData.getPostById(userID);
+        //Get all post by user
+      } catch (e) {
+        //TODO
+        res.status(404).json({ error: "Invalid user" });
+      }}
+    else{
+      return res.redirect("/mainPage");
     }
   })
-  .post(async (req, res) => {});
-
+  .post(async (req, res) => {
+    let usersData = req.body;
+    const user_ = req.session.user;
+    console.log(req.session)
+    let userExists;
+    try{
+      userExists = await userData.getUserById(user_);
+    }catch(e){
+      //TODO
+      res.status(404).json({error: 'User not found'});
+    }
+    try{
+      if(username){
+        if(usersData.username == userExists.username) throw "Error: Updated username must be differnt from previous";
+        const updatedInfo = await userData.updateUsername(usersData.username, usersData.userID);
+        if(updatedInfo){
+          return res.render("profilePage/profile");
+        }
+      
+      }
+    }catch(e){
+    }
+  })
 module.exports = router;

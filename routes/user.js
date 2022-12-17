@@ -70,6 +70,7 @@ router
     }
     email = valid.checkEmail(usersData.email);
     password = valid.checkPassword(usersData.password);
+    let usernameDB = await userData.getUserByEmail(email);
     try {
       const loginUser = await userData.verifyUser(
         usersData.email,
@@ -77,7 +78,7 @@ router
       );
       if (loginUser) {
         req.session.AuthCookie = usersData.email;
-        req.session.user = { email: usersData.email };
+        req.session.user = { email: usersData.email, username: usernameDB };
         req.session.login = loginUser.authenticatedUser;
         res.redirect("/mainPage");
       } else {

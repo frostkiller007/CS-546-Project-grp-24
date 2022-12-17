@@ -1,85 +1,72 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const data = require('../data');
-const helper = require('../helper');
+const data = require("../data");
+const helper = require("../helper");
 const postData = data.post;
-const commentData = data.comment;
+const commentData = require("../data/comment.js");
 
 router
-.route('/')
-.get(async (req, res) => {
+  .route("/")
+  .get(async (req, res) => {
     try {
-        const CommentList = await commentData.getAllComments();
-        res.json(CommentList);
-    } catch (error) {
-        res.status(500).send();
-    }   
-})
+      const CommentList = await commentData.getAllComments();
+      res.json(CommentList);
+    } catch (e) {
+      res.status(500).send(e);
+    }
+  })
 
-.post (async (req, res) => {
+  .post(async (req, res) => {
     let commentDetails = req.body;
-    if (!commentDetails){
-        res.status(400).json("You must enter data to add a comment");
+    if (!commentDetails) {
+      res.status(400).json("You must enter data to add a comment");
     }
-    const {userid, postid, comment} = commentDetails;
+    const { userid, postid, comment } = commentDetails;
+    console.log(userid);
     try {
-        helper.idcheck(userid);
-    } catch (error) {
-        res.status(400).send('Invalid userid');
+      helper.idcheck(userid);
+      helper.idcheck(postid);
+      helper.contentcheck(comment);
+      const newComment = await commentData.AddComment(postid, userid, comment);
+      res.status(200).json(newComment);
+    } catch (e) {
+      res.status(400).send(e);
     }
-    try {
-        helper.idcheck(postid);
-    } catch (error) {
-        res.status(400).send('Invalid postid');
-    }
-    try {
-        helper.contentcheck(comment);
-    } catch (error) {
-        res.status(400).send('Invalid comment');
-    }
-    try {
-        const newComment = await commentData.AddComment(postid, userid, comment);
-        res.status(200).json(newComment)
-    } catch (error) {
-        res.status(500).json(error)
-    }
-});
-
-
+  });
 
 router
-.route('/:id')
-.get(async (req, res) => {
+  .route("/:id")
+  .get(async (req, res) => {
     try {
-        req.params.id = helper.idcheck(req.params.id);
-    } catch (error) {
-        res.status(400).send('Invalid id');
+      req.params.id = helper.idcheck(req.params.id);
+    } catch (e) {
+      res.status(400).send("Invalid id");
     }
     try {
-        const commentDetails = await commentData.getCommentByID(req.params.id);
-        res.json(commentDetails);
-    } catch (error) {
-        res.status(404).json('Comment not found');
+      const commentDetails = await commentData.getCommentByID(req.params.id);
+      res.json(commentDetails);
+    } catch (e) {
+      res.status(404).json("Comment not found");
     }
-})
+  })
 
-.delete(async (req, res) => {
+  .delete(async (req, res) => {
     try {
-        req.params.id = helper.idcheck(req.params.id);
-    } catch (error) {
-        res.status(400).send('Invalid id');
+      req.params.id = helper.idcheck(req.params.id);
+    } catch (e) {
+      res.status(400).send("Invalid id");
     }
     try {
-        await commentData.getCommentByID(req.params.id);
-    } catch (error) {
-        res.status(404).json('Comment not Found')
+      await commentData.getCommentByID(req.params.id);
+    } catch (e) {
+      res.status(404).json("Comment not Found");
     }
     try {
-        const del = await commentData.DeleteComment(req.params.id);
-        res.status(200).send(del);
-    } catch (error) {
-        res.status(500).json(error)
+      const del = await commentData.DeleteComment(req.params.id);
+      res.status(200).send(del);
+    } catch (e) {
+      res.status(500).json(e);
     }
-});
+  });
 
 module.exports = router;

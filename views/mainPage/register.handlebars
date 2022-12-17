@@ -1,6 +1,44 @@
 <body>
-    <div id="container_1">
+  <header>
+            <div class="cd-logo"><a href="">
+                    <!-- <img src="img/handouts-logo.png" width="100%" height="60%" alt=""> -->
+            </a></div>
+    
+            <nav class="cd-main-nav-wrapper">
+                <ul class="cd-main-nav">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/user/login">Login</a></li>
+                    <li><a href="/user/register">Signup</a></li>
+                    <li><a href="/profile.html">Chats</a></li>
+                    {{!-- <li>
+                        <a href="#0" class="cd-subnav-trigger"><span>Categories</span></a>
+    
+                        <ul>
+                            <li><a href="/users.html">Users</a></li>
+                            <li><a href="/reports.html">Reports</a></li>
+                         
+                            <!-- <li>
+                                <a href="#0">
+                                    <img src="https://bootdey.com/i mg/Content/user_1.jpg" class="img-circle hvr-grow" alt="Trolltunga Norway" height="50" width="50">
+                                    Mark marni
+                                </a>
+                            </li> -->
+                            <li><a href="#0" class="placeholder">Placeholder</a></li>
+                        </ul>
+                    </li> --}}
+                </ul> <!-- .cd-main-nav -->
+            </nav> <!-- .cd-main-nav-wrapper -->
+            
+            <a href="#0" class="cd-nav-trigger">Menu<span></span></a>
+    </header>
+      <link rel="stylesheet" href="../../public/css/signup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
+    <div id="container_1">
+<br><br>
         <h1 id="title">
           Handouts Registration
         </h1>
@@ -11,38 +49,52 @@
         <!--description--->
       
       </div>
-      <!---container_1--->
-      <div id="container_2">
-      
-        <form id="survey-form" method="post">
-          <label id="name-label">Name</label>
-          <input type="text" id="username" name="username" class="form" required placeholder="Insert your name"><br>
-          <!--name--->
-          <label id="email-label">Email</label>
-          <input type="email" id="email" name="email" class="form" required placeholder="Insert your email"><br>
-          <!---email-->
-          <label id="number-label">Age</label>
-          <input type="number" id="age" name="age" class="form" placeholder="Age" min=18 max=60 required><br>
-          <!---number-->
-          <p>Location</p>
-          <label id="state-label">State</label>
-          <input type="text" id="state" name="state" class="form" required placeholder="Input State"><br>
-          <!--state--->
-          <label id="city-label">City</label>
-          <input type="text" id="city" name="city" class="form" required placeholder="Input City"><br>
-          <!---city-->
-          <label id="password-label">Password</label>
-          <input type="text" id="password" name="password" class="form" required placeholder="Input Password"><br>
-          <!---password-->
-
-          <br><br>
-          <!---comment
-      
-          <input type="submit" id="submit" name="submit" value="Submit">-->
-          <button type="submit" class="submitBtn">Register</button><br>
-
+    <div class="container">
+        <form id="form" action="/">
+            <div class="input-control">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text">
+                <div class="error"></div>
+            </div>
+            <div class="input-control">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="text">
+                <div class="error"></div>
+            </div>
+            
+            <div class="input-control">
+                <label for="age">Age</label>
+                <input id="age"name="age" type="text">
+                <div class="error"></div>
+            </div>
+            <div class="input-control">
+                <label for="city">City</label>
+                {{!-- <input id="city"name="city" type="text"> --}}
+                <select id="city" name="city">
+              <option value="bayonne">Bayonne</option>
+            <option value="harrison">Harrison</option>
+              <option value="hoboken">Hoboken</option>
+            <option value="jerseyc">Jersey City</option>
+            <option value="kearny">Kearny</option>
+            <option value="northb">North Bergen</option>
+            <option value="secaucus">Secaucus</option>
+            <option value="unionc">Union City</option>
+            <option value="weehawken">Weehawken</option>
+            <option value="westny">West New York</option>
+            </select>
+                <div class="error"></div>
+            </div>
+            <div class="input-control">
+                <label for="password">Password</label>
+                <input id="password"name="password" type="password">
+                <div class="error"></div>
+            </div>
+            <div class="input-control">
+                <label for="password2">Password again</label>
+                <input id="password2"name="password2" type="password">
+                <div class="error"></div>
+            </div>
+            <button type="submit">Sign Up</button>
         </form>
-        <!---survey-form--->
-      </div>
-      <!--container_2--->
+    </div>
 </body>

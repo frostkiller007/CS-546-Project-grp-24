@@ -11,8 +11,8 @@ router
     try {
       const CommentList = await commentData.getAllComments();
       res.json(CommentList);
-    } catch (error) {
-      res.status(500).send();
+    } catch (e) {
+      res.status(500).send(e);
     }
   })
 
@@ -25,24 +25,12 @@ router
     console.log(userid);
     try {
       helper.idcheck(userid);
-    } catch (error) {
-      res.status(400).send("Invalid userid");
-    }
-    try {
       helper.idcheck(postid);
-    } catch (error) {
-      res.status(400).send("Invalid postid");
-    }
-    try {
       helper.contentcheck(comment);
-    } catch (error) {
-      res.status(400).send("Invalid comment");
-    }
-    try {
       const newComment = await commentData.AddComment(postid, userid, comment);
       res.status(200).json(newComment);
-    } catch (error) {
-      res.status(500).json(error);
+    } catch (e) {
+      res.status(400).send(e);
     }
   });
 
@@ -51,13 +39,13 @@ router
   .get(async (req, res) => {
     try {
       req.params.id = helper.idcheck(req.params.id);
-    } catch (error) {
+    } catch (e) {
       res.status(400).send("Invalid id");
     }
     try {
       const commentDetails = await commentData.getCommentByID(req.params.id);
       res.json(commentDetails);
-    } catch (error) {
+    } catch (e) {
       res.status(404).json("Comment not found");
     }
   })
@@ -65,19 +53,19 @@ router
   .delete(async (req, res) => {
     try {
       req.params.id = helper.idcheck(req.params.id);
-    } catch (error) {
+    } catch (e) {
       res.status(400).send("Invalid id");
     }
     try {
       await commentData.getCommentByID(req.params.id);
-    } catch (error) {
+    } catch (e) {
       res.status(404).json("Comment not Found");
     }
     try {
       const del = await commentData.DeleteComment(req.params.id);
       res.status(200).send(del);
-    } catch (error) {
-      res.status(500).json(error);
+    } catch (e) {
+      res.status(500).json(e);
     }
   });
 

@@ -32,7 +32,10 @@ app.use("/mainPage", (req, res, next) => {
   if (!req.session.login) {
     return res
       .status(403)
-      .render("mainPage/home", { notLogged: true, title: `403: Forbidden` }); // not loggedin page
+      .render("mainPage/home", {
+        notLogged: true,
+        title: `Main Page (not logged)`,
+      }); // not loggedin page
   }
   next();
 });

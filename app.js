@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
-
+const static = express.static(__dirname + "/public");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
 
-// app.use("/public", static);
+app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -28,11 +28,11 @@ app.use(
   })
 );
 //Authentication Middleware
-app.use("/protected", (req, res, next) => {
+app.use("/mainPage", (req, res, next) => {
   if (!req.session.login) {
     return res
       .status(403)
-      .render("forbiddenAccess", { notLogged: true, title: `403: Forbidden` });
+      .render("mainPage/home", { notLogged: true, title: `403: Forbidden` }); // not loggedin page
   }
   next();
 });

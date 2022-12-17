@@ -38,7 +38,6 @@ router
         usersData.state,
         //usersData.postID,
         usersData.password
-       // usersData.profilePicture
       );
       // if(newUser){
       //   res.status(200).render('mainPage/login',{title:'Login'});
@@ -117,7 +116,7 @@ router
     }
   })
   .post(async (req, res) => {
-    
+
   });
 
 module.exports = router;

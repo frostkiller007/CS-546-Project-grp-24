@@ -13,8 +13,7 @@ const createUser = async(
     city,
     state,
    // postID,
-    password,
-   // profilePicture
+    password
     ) => {
     userName = valid.checkUserName(userName);
     email = valid.checkEmail(email);
@@ -22,9 +21,6 @@ const createUser = async(
     city = valid.checkCity(city);
     // // // postID = valid.checkPostID(postID);
     password = valid.checkPassword(password);
-    // if(profilePicture){
-    //     valid.checkString(profilePicture,'Profile Photo');
-    // }
 
     const usersCollection = await users();
     let userExist = await usersCollection.findOne({ username: userName });
@@ -41,8 +37,6 @@ const createUser = async(
         state: state,
         // // postID: postID,
         password: hashedPassword
-        //profilePicture: profilePicture
-
     }
     
     const insertInfo = await usersCollection.insertOne(newUsers);

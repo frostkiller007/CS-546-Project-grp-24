@@ -3,23 +3,23 @@ const router = express.Router();
 router.route("/").get(async (req, res) => {});
 
 
-router.get("/form", async (req, res) => {
+router.get("/form" , async (req, res) => {
     if (!req.session.userId) {   
       return res.redirect('/homePage');
     }
     try{
-      const userId = req.session.userId;
-      const userLogin = await userData.getUserById(userId);
+      const ID = req.session.userId;
+      const login = await userData.getUserById(ID);
       const postId = req.query.id;
       const post = await postData.getPostById(postId);
-      res.render('reports/report-form',{userLogin,'reported-post':post.topic, 'postId': postId});
+      res.render('reports/report-form',{login,'reported-post':post.topic, 'postId': postId});
     }catch(e){
       res.status(404).json({ error: e });
     }
   });
   router.post("/form", async (req, res) => {
-    const userId = req.session.userId;
-    const userLogin = await userData.getUserById(userId);
+    const Id = req.session.userId;
+    const login = await userData.getUserById(Id);
     const postId=req.body.postId;
     const post = await postData.getPostById(postId);
       try
@@ -29,25 +29,25 @@ router.get("/form", async (req, res) => {
           {
             reason=[reason];
           }
-          await reportData.addReport(userId,postId,reason);
-          res.render('reports/report-form',{success:"Report successfully submitted!", userLogin,'reported-post':post.topic, 'postId': postId});
+          await reportData.addReport(Id,postId,reason);
+          res.render('reports/report-form',{success:"Report successfully submitted!", login,'reported-post':post.topic, 'postId': postId});
           return;
       }
       catch(e)
       {
-        res.render('reports/report-form',{message:e, userLogin,'reported-post':post.topic, 'postId': postId});
+        res.render('reports/report-form',{message:e, login,'reported-post':post.topic, 'postId': postId});
       } 
   });
   
   router.get('/statistic', async (req, res) => {
     if (req.session && req.session.userId) {
-      let userLogin = await userData.getUserById(req.session.userId)
-      if (userLogin.Admin) {
+      let login = await userData.getUserById(req.session.userId)
+      if (login.Admin) {
         try {
           let allPosts = await postData.getAllPost();
           let allUsers = await userData.getAllUsers();
           let allComments = await commentData.getAllComments();
-          res.render('statistics/statistics',{ allPosts,allUsers, allComments,userLogin });
+          res.render('statistics/statistics',{ allPosts,allUsers, allComments,login });
         } catch (error) {
           res.status(404).send(error);
         }
@@ -70,11 +70,11 @@ router.get("/form", async (req, res) => {
   
   router.get("/", async (req, res) => {
     if (req.session && req.session.userId) {
-      let userLogin = await userData.getUserById(req.session.userId);
-      if (userLogin.Admin) {
+      let login = await userData.getUserById(req.session.userId);
+      if (login.Admin) {
+        const r_list= await reportData.getAllReports();
         try {
-          const reportList = await reportData.getAllReports();
-          res.render('reports/reportList',{reportList,userLogin});
+          res.render('reports/r_list',{r_list,login});
         } catch (error) {
           res.status(404).send(error);
         }

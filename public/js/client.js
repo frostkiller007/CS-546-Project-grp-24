@@ -1,10 +1,9 @@
 const e = require("express");
-
 const form = document.getElementById('survey-form');
 const username = document.getElementById('username');
 const email = document.getElementById('email');
 const age = document.getElementById('age');
-const state = document.getElementById('state')
+// const state = document.getElementById('state')
 const city = document.getElementById('city')
 const password = document.getElementById('password');
 const password2 = document.getElementById('password2');

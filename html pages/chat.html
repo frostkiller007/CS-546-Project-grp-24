@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat-Box</title>
+    <link rel="stylesheet" href="public/css/chat.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- chat box -->
+        <div class="chat-box">
+            <!-- client -->
+            <div class="client">
+                <img src="public/img/logo.png" alt="logo" />
+                <div class="client-info">
+                    <h2>Username</h2>
+                    <p>online</p>
+                </div>
+            </div>
+
+            <!-- main chat section -->
+            <div class="chats">
+                <div class="client-chat">Hi!</div>
+                <div class="my-chat">Hi!</div>
+                <div class="client-chat">What would you like to buy</div>
+                <div class="my-chat">I'm interested in the TV you posted earlier</div>
+                <div class="client-chat">lets connect on call. Please share your number.</div>
+            </div>
+
+            <!-- input field section -->
+            <div class="chat-input">
+                <input type="text" placeholder="Enter Message" />
+                <button class="send-btn">
+                    <img src="public/img/send.jpg" alt="send-btn" onclick="myFunction()">
+                </button>
+            </div>
+        </div>
+
+        <!-- button -->
+        <div class="chat-btn">
+            <img src="public/img/Circle-icons-chat.svg.png" alt="chat box icon btn">
+        </div>
+    </div>
+
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

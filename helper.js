@@ -93,4 +93,32 @@ module.exports = {
 
         return value;
     },
-  };
+    // HELPER FUNCTION FOR ID CHECKING:
+ idcheck(id){
+    if (!id) throw 'Please provide an id to search for';
+    if (typeof id !== 'string') throw 'id has to be a string';
+    if (id.trim().length === 0)
+    throw 'id cannot be an empty string or just spaces';
+    id = id.trim();
+    if (!ObjectId.isValid(id)) throw 'invalid object ID';
+},
+
+//HELPER FUNCTION FOR VALID STRING INPUT 
+// USE THIS FUNCTION FOR CHECKING CONTENTS LIKE POST_CAPYION OR COMMENT ETC.
+ contentcheck(content){
+    if (!content) throw 'Please provide a content';
+    if (typeof content !== 'string') throw 'content has to be a string';
+    if (content.trim().length === 0)
+    throw 'content cannot be an empty string or just spaces';
+    content = content.trim();
+},
+// HELPER FUNCTION FOR ARRAY CHECKING:
+ arraycheck(array){
+    if (!array) throw 'Please provide an array';
+    if (!Array.isArray(array)) throw `${array} has to be an array`;
+    array.forEach(element => {
+        if (typeof element !== 'string') throw 'array elements have to be a string';  
+    });
+   
+}
+};

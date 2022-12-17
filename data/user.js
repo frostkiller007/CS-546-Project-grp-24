@@ -97,6 +97,20 @@ const verifyUser = async (email, password) => {
   }
   return ret;
 };
+
+const updateUsername = async (username, userID) => {
+  username = valid.checkUserName(username);
+  if(!userID) throw "Error: You must provide userID";
+
+  const userCollection = await users();
+  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userID)},{$set: username});
+
+  if(updateInfo.modifiedCount === 0) throw 'Error: username can not be updated';
+  
+  return username;
+};
+
+
 module.exports = {
   createUser,
   getUserById,

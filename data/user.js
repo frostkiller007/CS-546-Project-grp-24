@@ -12,7 +12,7 @@ const createUser = async(
     age,
     city,
     state,
-   // postID,
+    posts,
     password
     ) => {
     userName = valid.checkUserName(userName);
@@ -35,7 +35,7 @@ const createUser = async(
         age: age,
         city: city,
         state: state,
-        // // postID: postID,
+        posts: [],
         password: hashedPassword
     }
     
@@ -87,8 +87,18 @@ const verifyUser = async (
     }
     return ret;
 };
+
+
+const AddPosttoUser = async(userid, postid) => {
+  const UserCollection = await users();
+  const updatedInfo = await UserCollection.updateOne({_id: ObjectId(userid)}, {$addToSet: {posts: postid}});
+  if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount) throw 'Could not add post to the user';
+  return await this.getUserById(userid);
+};
+
 module.exports = {
     createUser,
     getUserById,
-    verifyUser
+    verifyUser,
+    AddPosttoUser
 };

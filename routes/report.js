@@ -30,6 +30,9 @@ router.route("/form").post(async(req, res) => {
       const post = await postData.getPostById(postId);
       
         let reason = req.body.reason;
+        if(!post){
+          throw "Did not find any post."
+        }
         if(typeof reason == "string")
         {
           reason=[reason];

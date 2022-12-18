@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="/public/css/hover.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css">
     <link rel="stylesheet" href="/public/css/style_nav.css"> <!-- Resource style -->
-	<script src="js/modernizr.js"></script> <!-- Modernizr -->
+	<link rel="stylesheet" href="/public/css/profile_pic.css">
+    <script src="js/modernizr.js"></script> <!-- Modernizr -->
 </head>
 <body>
     	<header>
@@ -58,7 +59,10 @@
                 <div class="well well-sm well-social-post">
             <form>
                 <ul class="list-inline" id="list_PostActions">
-                    <li class="active"><a href="#">New Post</a></li>
+                    <!-- <input id="file" type="file" onchange="loadFile(event)"/> -->
+                    <li class="active">
+                        <a href="#"><input id="file" type="file" onchange="loadFile(event)"/>
+                        </a></li>
                 </ul>
                 <textarea class="form-control" placeholder="Give Something Away..."></textarea>
                 <ul class="list-inline post-actions">
@@ -205,13 +209,16 @@
             </div>
 
 	</div>
+    <script src="../public/js/profile_javascript.js"></script> 
 </div>
 
 <script src="bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
 <script src="js/main.js"></script> <!-- Resource jQuery -->
+
 <script type="text/javascript">
+
             
     $(function(){
         var postActions   = $( '#list_PostActions' );

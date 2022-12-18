@@ -3,6 +3,7 @@ const router = express.Router();
 const userData = require("../data/user.js");
 const valid = require("../helper.js");
 const bcrypt = require("bcrypt");
+const xss = require("xss");
 let saltRounds = 10;
 
 // const { async } = require("seed/lib/seed");

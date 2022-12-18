@@ -5,6 +5,7 @@ const userData = require("../data/user.js");
 const postData = require("../data/post.js");
 const path = require("path");
 const multer = require("multer");
+const xss = require("xss");
 
 var fs = require("fs");
 // SET STORAGE
@@ -25,22 +26,22 @@ router.route("/").get(async (req, res) => {
     if (req.session.user)
       userRegister = await userData.getUserByUserId(req.session.user.id);
 
-    let allPost = await postData.getAllPosts();
+    // let allPost = await postData.getAllPosts();
     // for (let i = 0; i < allPost.length; i++) {
     //     let temp = await userData.getUserById(allPost[i].userId);
     //     allPost[i].userNickname = temp.nickname;
     //   }
-    allPost.forEach(async (element) => {
-      let userInfo = await userData.getUserByUserId(element.userId);
-      allPost.userName = userInfo.userName;
-    });
+    // allPost.forEach(async (element) => {
+    //   let userInfo = await userData.getUserByUserId(element.userId);
+    //   allPost.userName = userInfo.userName;
+    // });
     // allPost.sort((a, b) => {
     //   b.date - a.date;
     // });
     // res.send({ allPost, userRegister });
     // res.status(200).json(allPost);
 
-    res.render("mainPage/home", { title: "Home Page", allPost });
+    res.render("mainPage/home", { title: "Home Page" });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });

@@ -94,9 +94,7 @@ router
           isAdmin: admin,
         };
         req.session.login = loginUser.authenticatedUser;
-        res.status(401).render("mainPage/login", {
-          error: "Provide a valid username and/or password",
-        });
+        res.render("/mainPage");
       } else {
         return res.status(401).render("mainPage/login", {
           error: "Provide a valid username and/or password",

@@ -3,21 +3,21 @@ const router = express.Router();
 const data = require("../data");
 const userData = data.user;
 const postData = require("../data/post.js");
-const path = require('path');
-const multer = require('multer');
+const path = require("path");
+const multer = require("multer");
 
-var fs = require('fs');
+var fs = require("fs");
 // SET STORAGE
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads')
+    cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-})
- 
-var upload = multer({ storage: storage })
+    cb(null, file.fieldname + "-" + Date.now());
+  },
+});
+
+var upload = multer({ storage: storage });
 
 router.route("/").get(async (req, res) => {
   try {
@@ -39,7 +39,7 @@ router.route("/").get(async (req, res) => {
     // });
     // res.send({ allPost, userRegister });
     // res.status(200).json(allPost);
-    res.render("mainPage/home.handlebars", { title: `First Page` });
+    res.render("mainPage/home", { title: `First Page` });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });
@@ -82,27 +82,36 @@ router.route("/search").get(async (req, res) => {
     else res.status(400).json({ error: e });
   }
 });
-router
+router;
 //.route("/createPost")
-router.post('/createPost', upload.single('picture'), async (req, res) => {
-  if (!req.session.user){
-    return res.render("mainPage/home", { message: 'Must be login to create post'});
+router.post("/createPost", upload.single("picture"), async (req, res) => {
+  if (!req.session.user) {
+    return res.render("mainPage/home", {
+      message: "Must be login to create post",
+    });
   }
   const description = req.body.description;
   const tagsArray = req.body.tag;
-  var img = fs.readFileSync(path.join(__dirname, '../', 'public/img', req.body.picture));
-  var encode_image = img.toString('base64');
+  var img = fs.readFileSync(
+    path.join(__dirname, "../", "public/img", req.body.picture)
+  );
+  var encode_image = img.toString("base64");
   let username = req.session.user.username;
   var finalImg = {
-      contentType: 'image/jpg',
-      image: Buffer.from(encode_image, 'base64')
+    contentType: "image/jpg",
+    image: Buffer.from(encode_image, "base64"),
   };
 
-  const addPost = await postData.AddPost(//"topic",
-   username, description, finalImg, tagsArray);
+  const addPost = await postData.AddPost(
+    //"topic",
+    username,
+    description,
+    finalImg,
+    tagsArray
+  );
   return res.render("mainPage/home");
-  
+
   //https://www.geeksforgeeks.org/how-to-upload-file-using-formidable-module-in-node-js/
- });
+});
 
 module.exports = router;

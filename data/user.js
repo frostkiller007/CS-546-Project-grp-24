@@ -172,7 +172,6 @@ const updatePassword = async (password, userID) => {
 
 module.exports = {
   createUser,
-  checkAdmin,
   getUserByUsername,
   getUserByEmail,
   verifyUser,

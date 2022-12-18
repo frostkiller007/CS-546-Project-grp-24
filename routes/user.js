@@ -26,17 +26,24 @@ router
     res.redirect("/mainPage");
   })
   .post(async (req, res) => {
-    const usersData = req.body;
+    // const usersData = req.body;
     //TODO: validation
     try {
+      username = xss(req.body.username);
+      email = xss(req.body.email);
+      age = xss(req.body.age);
+      city = xss(req.body.city);
+      state = xss(req.body.state);
+      postID = xss(req.body.postID);
+      password = xss(req.body.password);
       const newUser = await userData.createUser(
-        req.body.username,
-        req.body.email,
-        req.body.age,
-        req.body.city,
-        req.body.state,
-        //req.body.postID,
-        req.body.password
+        username,
+        email,
+        age,
+        city,
+        state,
+        postID,
+        password
       );
       // if(newUser){
       //   res.status(200).render('mainPage/login',{title:'Login'});
@@ -65,6 +72,8 @@ router
   .post(async (req, res) => {
     try {
       let usersData = req.body;
+      let email = xss(req.body.email);
+      let password = xss(req.body.password);
       email = valid.checkEmail(usersData.email);
       password = valid.checkPassword(usersData.password);
       let usernameDB = await userData.getUserByEmail(email);
@@ -85,7 +94,9 @@ router
           isAdmin: admin,
         };
         req.session.login = loginUser.authenticatedUser;
-        res.redirect("/mainPage");
+        res.status(401).render("mainPage/login", {
+          error: "Provide a valid username and/or password",
+        });
       } else {
         return res.status(401).render("mainPage/login", {
           error: "Provide a valid username and/or password",
@@ -185,24 +196,33 @@ router
           return res.render("profilePage/profile");
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      res.status(400).json({ err: e });
+    }
   }),
   router.route("/profile/update").patch(async (req, res) => {
     // hajd;
     // if
   });
-router
-  .route("/viewProfile")
-  .get(async (req, res) => {
+router.route("/viewProfile/:id").get(async (req, res) => {
+  try {
     if (!req.session.user) {
       return res.redirect("/mainPage");
     } else {
     }
-  })
-  .post(async (req, res) => {
-    if (!req.session.user) {
-      return res.redirect("/mainPage");
-    } else {
-    }
-  });
+  } catch (e) {
+    res.status(400).json({ err: e });
+  }
+});
+//   .post(async (req, res) => {
+//     try {
+// 	if (!req.session.user) {
+// 	      return res.redirect("/mainPage");
+// 	    } else {
+// 	    }
+// } catch (e) {
+//   res.status(400).json({err:e})
+
+// }
+//   });
 module.exports = router;

@@ -29,6 +29,7 @@
       "formidable": "^2.1.1",
       "handlebars": "^4.7.7",
       "init": "^0.1.2",
-      "mongodb": "^4.12.1"
+      "mongodb": "^4.12.1",
+      "xss":"^1.0.14"
     }
   }

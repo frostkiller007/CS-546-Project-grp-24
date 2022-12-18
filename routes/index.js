@@ -10,7 +10,7 @@ const constructorMethod = (app) => {
   app.use("/user", userRoutes);
   app.use("/post", postRoutes);
   app.use("/chat", chatRoutes);
-  app.use("/report", reportRoutes);
+  app.use("/report", reportRoutes); 
   app.use("/comment", commentRoutes);
 
   app.get("/", (req, res) => {

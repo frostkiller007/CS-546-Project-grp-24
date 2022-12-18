@@ -100,7 +100,6 @@ const getPostByManyTags = async(tags) => {
     return FindPost;
 }
 
-// ye Likes bacha hai 
 const Likes = async(postid) => {
     helper.idcheck(postid);
 

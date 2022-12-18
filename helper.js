@@ -1,4 +1,6 @@
 const {ObjectId} = require('mongodb');
+const offensive = require('bad-words');
+const check = new offensive()
 
 module.exports = {
     checkUserName(userName) {
@@ -8,7 +10,8 @@ module.exports = {
         if (userName.length === 0)
             throw 'Error: userName cannot be an empty string or just spaces';
         if(userName.length < 4) throw 'Error: userName must be at least 4 characters long';
-        let regex = /^[A-Za-z0-9]*$/;
+        //TODO
+        let regex = /^[A-Za-z0-9@]*$/;
         if(!regex.test(userName)) throw 'Error: userName must be only alphanumeric characters and no spaces';
         
         return userName;
@@ -76,7 +79,7 @@ module.exports = {
     checkString(value, valueName) {
         if (!value) throw `Error: You must provide ${valueName}`;
         if (typeof value !== 'string') throw `Error: ${valueName} must be a string`;
-        userName = userName.trim();
+        value = value.trim();
         if (value.length === 0)
             throw `Error: ${valueName} cannot be an empty string or just spaces`;
        
@@ -111,6 +114,8 @@ module.exports = {
     if (content.trim().length === 0)
     throw 'content cannot be an empty string or just spaces';
     content = content.trim();
+    content = check.clean(content);
+    
 },
 // HELPER FUNCTION FOR ARRAY CHECKING:
  arraycheck(array){

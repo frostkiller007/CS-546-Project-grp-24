@@ -7,6 +7,7 @@ const age = document.getElementById("age");
 const city = document.getElementById("city");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
+const comment = document.getElementById("")
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();

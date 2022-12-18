@@ -1,33 +1,71 @@
 <body>
+  <header>
+            <div class="cd-logo"><a href="">
+                    <!-- <img src="img/handouts-logo.png" width="100%" height="60%" alt=""> -->
+            </a></div>
+    
+            <nav class="cd-main-nav-wrapper">
+                <ul class="cd-main-nav">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/user/login">Login</a></li>
+                    <li><a href="/user/register">Signup</a></li>
+                    <li><a href="/profile.html">Chats</a></li>
+                    {{!-- <li>
+                        <a href="#0" class="cd-subnav-trigger"><span>Categories</span></a>
+    
+                        <ul>
+                            <li><a href="/users.html">Users</a></li>
+                            <li><a href="/reports.html">Reports</a></li>
+                         
+                            <!-- <li>
+                                <a href="#0">
+                                    <img src="https://bootdey.com/i mg/Content/user_1.jpg" class="img-circle hvr-grow" alt="Trolltunga Norway" height="50" width="50">
+                                    Mark marni
+                                </a>
+                            </li> -->
+                            <li><a href="#0" class="placeholder">Placeholder</a></li>
+                        </ul>
+                    </li> --}}
+                </ul> <!-- .cd-main-nav -->
+            </nav> <!-- .cd-main-nav-wrapper -->
+            
+            <a href="#0" class="cd-nav-trigger">Menu<span></span></a>
+    </header>
       <link rel="stylesheet" href="../../public/css/signup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <br><br>
     <div id="container_1">
 
         <h1 id="title">
           Handouts Login
         </h1>
         <!--title-->
-      
+        <p id="description">
+          Enter the required data in the boxes.
+        </p>
+        <!--description--->
       
       </div>
-      <!---container_1--->
-      <div id="container_2">
-      
-        {{!-- <form id="survey-form"> --}}
-        <form action="/user/login" method= "post" id="login-form">
-          <label id="email-label">Email</label>
-          <input type="email" id="email" name="email" class="form" required placeholder="Insert your email"><br>
-          <!---email-->
-          <label id="password-label">Password</label>
-          <input type="password" id="password" name="password" class="form" required placeholder="Input Password"><br>
-          <!---password-->
-
-          <br><br>
-          <!---comment
-      
-          <input type="submit" id="submit" name="submit" value="Submit">-->
-          <button type="submit" class="submitBtn">Login</button><br>
+    <div class="container">
+        <form id="form" action="/">
+            
+            <div class="input-control">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="text">
+                <div class="error"></div>
+            </div>
+            
+            
+            <div class="input-control">
+                <label for="password">Password</label>
+                <input id="password"name="password" type="password">
+                <div class="error"></div>
+            </div>
+            
+            <button type="submit">Sign Up</button>
         </form>
-        <!---survey-form--->
-      </div>
-      <!--container_2--->
+    </div>
 </body>

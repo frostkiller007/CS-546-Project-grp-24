@@ -43,10 +43,10 @@
   
   body {
     height: 100vh;
-    background-color: #191815;
+    background-color: #54BEEB;;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: cen ter; */
   }
   body a:hover {
     text-decoration: none;

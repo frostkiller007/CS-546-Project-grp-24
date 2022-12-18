@@ -12,7 +12,7 @@ module.exports = {
     if (userName.length < 4)
       throw "userName must be at least 4 characters long";
     //TODO
-    let regex = /^[A-Za-z0-9@]*$/;
+    let regex = /^[A-Za-z0-9]*$/;
     if (!regex.test(userName))
       throw "userName must be only alphanumeric characters and no spaces";
 

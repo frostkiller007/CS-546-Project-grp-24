@@ -30,12 +30,10 @@ app.use(
 //Authentication Middleware
 app.use("/mainPage", (req, res, next) => {
   if (!req.session.login) {
-    return res
-      .status(403)
-      .render("mainPage/home", {
-        notLogged: true,
-        title: `Main Page (not logged)`,
-      }); // not loggedin page
+    return res.status(403).render("mainPage/home", {
+      notLogged: true,
+      title: `Main Page (not logged)`,
+    }); // not loggedin page
   }
   next();
 });

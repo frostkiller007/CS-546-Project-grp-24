@@ -4,6 +4,7 @@ const { ObjectId } = require("mongodb");
 const valid = require("../helper");
 const bcrypt = require("bcrypt");
 const { checkEmail } = require("../helper");
+const helper = require("../helper");
 let saltRounds = 10;
 
 const createUser = async (
@@ -19,7 +20,7 @@ const createUser = async (
   email = valid.checkEmail(email);
   age = valid.checkAge(age);
   city = valid.checkCity(city);
-  // // // postID = valid.checkPostID(postID);
+  // posts = helper.arraycheck(posts);
   password = valid.checkPassword(password);
 
   const usersCollection = await users();
@@ -39,7 +40,7 @@ const createUser = async (
     age: age,
     city: city,
     state: state,
-    // // postID: postID,
+    // posts: [],
     password: hashedPassword,
   };
 
@@ -111,9 +112,20 @@ const updateUsername = async (username, userID) => {
 };
 
 
+// const addPosttoUser = async (userid, postid) => {
+//   helper.idcheck(userid);
+//   helper.idcheck(postid);
+//   const usersCollection = await users();
+//   const updateInfo = await usersCollection.updateOne({_id: ObjectId(userid)},{$addToSet: {posts: postid}});
+//   if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Could not add post to user';
+//   return await this.getUserById(userid);
+// };
+
+
 module.exports = {
   createUser,
   getUserById,
   getUserByEmail,
   verifyUser,
+  // addPosttoUser
 };

@@ -1,4 +1,6 @@
 const {ObjectId} = require('mongodb');
+const offensive = require('bad-words');
+const check = new offensive()
 
 module.exports = {
     checkUserName(userName) {
@@ -111,6 +113,8 @@ module.exports = {
     if (content.trim().length === 0)
     throw 'content cannot be an empty string or just spaces';
     content = content.trim();
+    content = check.clean(content);
+    
 },
 // HELPER FUNCTION FOR ARRAY CHECKING:
  arraycheck(array){

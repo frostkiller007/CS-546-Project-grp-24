@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const data = require("../data");
-const userData = data.user;
+//const data = require("../data");
+const userData = require("../data/user.js");
 const postData = require("../data/post.js");
 const path = require("path");
 const multer = require("multer");
@@ -22,24 +22,25 @@ var upload = multer({ storage: storage });
 router.route("/").get(async (req, res) => {
   try {
     let userRegister = null;
-    if (req.session.userId)
-      userRegister = await userData.getUserById(req.session.userId);
+    if (req.session.user)
+      userRegister = await userData.getUserByUserId(req.session.user.id);
 
-    // let allPost = await postData.getAllPost();
-    //   for (let i = 0; i < allPost.length; i++) {
+    let allPost = await postData.getAllPosts();
+    // for (let i = 0; i < allPost.length; i++) {
     //     let temp = await userData.getUserById(allPost[i].userId);
     //     allPost[i].userNickname = temp.nickname;
     //   }
-    // allPost.forEach(async (element) => {
-    //   let userInfo = await userData.getUserById(element.userId);
-    //   allPost.userName = userInfo.userName;
-    // });
+    allPost.forEach(async (element) => {
+      let userInfo = await userData.getUserByUserId(element.userId);
+      allPost.userName = userInfo.userName;
+    });
     // allPost.sort((a, b) => {
     //   b.date - a.date;
     // });
     // res.send({ allPost, userRegister });
     // res.status(200).json(allPost);
-    res.render("mainPage/home", { title: `First Page` });
+
+    res.render("mainPage/home", { title: "Home Page", allPost });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });
@@ -82,8 +83,6 @@ router.route("/search").get(async (req, res) => {
     else res.status(400).json({ error: e });
   }
 });
-router;
-//.route("/createPost")
 router.post("/createPost", upload.single("picture"), async (req, res) => {
   if (!req.session.user) {
     return res.render("mainPage/home", {

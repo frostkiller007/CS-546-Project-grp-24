@@ -127,8 +127,33 @@
         <!-- First Post type form -->
 		<br>
         <!-- Second Post type form (post with pic)-->
+         {{!-- {{#each allPost}} --}}
+         {{!-- TODO --}}
+         <div class="col-sm-8">
+                {{#each allPost}}
+                    <div class="media post-part">
+                        <div class="media-left ">
+                            <div class="photoContainer">
+                                <a href='http://localhost:3000/posts/postInfo/{{this._id}}'>
+                                    <img class="media-object user-Pic" src={{images.image}}>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading postTopic"><a class="jumpToPost" id={{this._id}} href="#">{{this.topic}}</a></h4>
+                            <p class="AllContent">{{this.content}}</p>
+                        </div>
+                    </div>
+                {{else}}
+                        <div>
+                            <h2 class="noPost">Oops! No post.</h2>
+                        </div>
+                {{/each}}
+            </div>
+            {{!-- todo --}}
         <div class="col-md-offset-3 col-md-6 col-xs-12">
                 <section class="widget">
+                  
                     <div class="widget-controls">
                             <a href="#"></a>
                             <a href="javascript:void(0)" class="dropbtn" data-widgster="close">
@@ -147,14 +172,17 @@
                                     </div>
                         </a>
                     </div>
+                
                     <div class="widget-body">
                         <div class="widget-top-overflow text-white">
                                 <!-- <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox data-caption="Caption for single image">
                                         <img class="cover"src="https://lorempixel.com/800/400/nature/4/" style="width:800px;height:400px;" />
                                 </a> -->
-                                <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox="images" data-caption="Lots of cool stuff is happening around you. Just calm down for a sec and listen. Colors, sounds, thoughts, ideas">
-                                        <img src="https://lorempixel.com/800/400/nature/4/" style="width:556px;height:400px;"  class="cover" />
-                                </a>
+                                {{!-- <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox="images" data-caption="Lots of cool stuff is happening around you. Just calm down for a sec and listen. Colors, sounds, thoughts, ideas"> --}}
+                                       {{!-- <a>
+                                        <img src={{['images']['image']}} style="width:556px;height:400px;"  class="cover" />
+                                        </a> --}}
+                                {{!-- </a> --}}
                             <!-- <img  class="cover" src="https://lorempixel.com/800/400/nature/4/"style="width:800px;height:400px;"> -->
                             <!-- <ul class="tags text-white pull-right">
                                 <li><a href="#">design</a></li>
@@ -207,7 +235,7 @@
                                 </li>
                                 <li>
                                     <span class="thumb-xs avatar pull-left mr-sm">
-                                     <button > <img class="img-circle" src="https://bootdey.com/img/Content/user_2.jpg" alt="..."></button>
+                                        <img class="img-circle" src="https://bootdey.com/img/Content/user_2.jpg" alt="...">
                                     </span>
                                     <div class="comment-body">
                                         <input class="form-control input-sm" type="text" placeholder="Write your comment...">
@@ -216,8 +244,8 @@
                             </ul>
                         </footer>
                 </section>   
-            </div>
-
+        </div>
+        {{!-- {{/each}} --}}
 	</div>
 </div>
 

@@ -19,6 +19,9 @@ router
 
   .post(async (req, res) => {
     try {
+      if (!req.session.user) {
+        res.status(400).json("You must login to comment on posts");
+      }
       if (!req.body) {
         res.status(400).json("You must enter data to add a comment");
       }

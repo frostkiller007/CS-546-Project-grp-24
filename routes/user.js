@@ -3,6 +3,7 @@ const router = express.Router();
 const userData = require("../data/user.js");
 const valid = require("../helper.js");
 const bcrypt = require("bcrypt");
+const xss = require("xss");
 let saltRounds = 10;
 
 // const { async } = require("seed/lib/seed");
@@ -94,9 +95,7 @@ router
           isAdmin: admin,
         };
         req.session.login = loginUser.authenticatedUser;
-        res.status(401).render("mainPage/login", {
-          error: "Provide a valid username and/or password",
-        });
+        return res.redirect("/mainPage");
       } else {
         return res.status(401).render("mainPage/login", {
           error: "Provide a valid username and/or password",

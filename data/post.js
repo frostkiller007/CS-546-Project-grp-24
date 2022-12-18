@@ -1,35 +1,38 @@
 const mongoCollections = require('../config/mongoCollections');
 const {ObjectId} = require ('mongodb');
 const helper = require('../helper');
-const users = require('./user');
+const userData = require('./user');
 const posts = mongoCollections.post;
 const comments = mongoCollections.comment;
 
-const AddPost = async(topic, userid, caption, images, tagsArray) => {
-    helper.contentcheck(topic);
-    helper.idcheck(userid);
-    helper.contentcheck(caption);
-    helper.arraycheck(images);
-    helper.arraycheck(tagsArray);
-    const PostCollection = await posts();
+const AddPost = async(//topic, 
+    username, description, images, tagsArray) => {
+    // helper.contentcheck(topic);
+    // helper.idcheck(userid);
+    // helper.contentcheck(description);
+    // helper.arraycheck(images);
+    // helper.arraycheck(tagsArray);
+    const getUser = await userData.getUserByUsername(username);
+    const userId = getUser._id
+    const postCollection = await posts();
     let newPost = {
-        topic: topic,
-        userid: userid,
-        caption: caption,
+        //topic: topic,
+        userId: ObjectId(userId),
+        description: description,
         images: images,
         commentidArray: [],
         tagsArray: tagsArray,
         likes: 0,
         date: new Date().toLocaleDateString
     }
-    const insertInfo = await PostCollection.insertOne(newPost);
+    const insertInfo = await postCollection.insertOne(newPost);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
       throw 'Could not add Post';
-    const newPostid = insertInfo.insertedId;
-    const PostAdded = await getPostByID(newPostid.toHexString());
+    const newPostId = insertInfo.insertedId;
+    const postAdded = await getPostByID(newPostId);
     // userfunction name check(AddPosttoUser)
-    await users.AddPosttoUser(userid, newPostid.toHexString());
-    return PostAdded;
+    await userData.addPostUser(userId, newPostId);
+    return postAdded;
 }
 
 const DeletePost = async(postid) => {
@@ -68,7 +71,7 @@ const getAllPosts = async() => {
 }
 
 const getPostByID = async(id) => {
-    helper.idcheck(id);
+    //helper.idcheck(id);
     const PostCollection = await posts();
     const post = await PostCollection.findOne({_id: ObjectId(id)});
     if (post === null) throw 'No post with that id';
@@ -100,7 +103,6 @@ const getPostByManyTags = async(tags) => {
     return FindPost;
 }
 
-// ye Likes bacha hai 
 const Likes = async(postid) => {
     helper.idcheck(postid);
 

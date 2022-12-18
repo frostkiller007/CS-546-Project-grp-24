@@ -36,37 +36,60 @@
         <!-- Post editor -->
         <div class="col-md-offset-3 col-md-6 col-xs-12">
                 <div class="well well-sm well-social-post">
-            <form id="form-post" action="/createPost">
+            <form id="form" action="/mainPage/createPost" method="POST">
                 <ul class="list-inline" id="list_PostActions">
                     <li class="active"><a href="#">New Post</a></li>
                 </ul>
-                <textarea class="form-control" placeholder="Give Something Away..."></textarea>
+                {{!-- TODO                 --}}
+                <textarea name="description" class="form-control description" id="description" placeholder="Give Something Away..."></textarea>
+                {{!-- <input id="description" name="description" type="text" placeholder="Give Something Away..."> --}}
+
                 <br>
                     <label class="checkbox-inline">
-      <input type="checkbox" value="">Electronics
-    </label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">Home Goods
-    </label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">Fashion
-    </label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">Vehicles
-    </label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">Office Goods
-    </label>            
-                <ul class="list-inline post-actions">
+                    <input name="tag" type="checkbox" value="electronics">Electronics
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="homegoods">Home Goods
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="fashion">Fashion
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="vehicles">Vehicles
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="officegoods">Office Goods
+                    </label>            
+                {{!-- <ul class="list-inline post-actions">
                     <li><a href="#" class="hvr-icon-up">
                             <i class="far fa-file-image hvr-icon"></i>
                         </a>
                     </li>
-                    <li class="pull-right" ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li>
-                </ul>
+                 </ul> --}}
+                    {{!-- <li class="pull-right" ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li> --}}
+               
+                {{!-- <div>
+                    <label class="btn btn-default fileinput-button">
+                        <span>Choose photos</span>
+                        <input name="photoArr" id="addImg" type="file" accept="image/jpg, image/png, image/jpeg, image/gif, image/tiff" multiple>
+                    </label>
+                     <button type="submit">Submit</button>
+                </div> --}}
+                <input type="file" name="picture" accept="image/*" class="btn" required/>
+                <button type ="submit">Submit</button>
+                {{!-- <input id="addNewPostButton" name="submit" type="button" class="btn AllButton" value="Submit" data-toggle="button" aria-pressed="false" autocomplete="off"> --}}
+                 {{!-- <input type="submit" class = "btn" value="Upload Photo"/> --}}
+                {{!-- <form action="/mainPage/createPost" enctype="multipart/form-data" method="POST"> 
+                    <input type="file" name="picture" accept="image/*" class="btn" required/>
+                    <input type="submit" class = "btn" value="Upload Photo"/>
+                </form> --}}
+               
             </form>
                 </div>
             </div>                                                          
+            <!--TrYYYYYYY-->
+
+           
         <!-- End Post editor -->
         <div class="col-md-offset-3 col-md-6 col-xs-12">
             <div class="well well-sm well-social-post">
@@ -220,6 +243,7 @@
             currentAction = self;
         });
     });
+
 </script>
 	
 </script>

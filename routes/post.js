@@ -4,6 +4,7 @@ const data = require("../data");
 const helper = require("../helper");
 const postData = data.post;
 
-router.route("/");
+router
+.route("/");
 
 module.exports = router;

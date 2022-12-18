@@ -4,6 +4,7 @@ const data = require("../data");
 const helper = require("../helper");
 const postData = data.post;
 const commentData = require("../data/comment.js");
+const xss = require("xss");
 
 router
   .route("/")
@@ -17,13 +18,14 @@ router
   })
 
   .post(async (req, res) => {
-    let commentDetails = req.body;
-    if (!commentDetails) {
-      res.status(400).json("You must enter data to add a comment");
-    }
-    const { userid, postid, comment } = commentDetails;
-    console.log(userid);
     try {
+      if (!req.body) {
+        res.status(400).json("You must enter data to add a comment");
+      }
+      let userid = xss(req.body.userid);
+      let postid = xss(req.body.postid);
+      let comment = xss(req.body.comment);
+      console.log(userid);
       helper.idcheck(userid);
       helper.idcheck(postid);
       helper.contentcheck(comment);

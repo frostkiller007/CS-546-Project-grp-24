@@ -22,4 +22,3 @@ const constructorMethod = (app) => {
 };
 
 module.exports = constructorMethod;
-// module.exports = app;

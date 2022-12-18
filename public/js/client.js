@@ -43,7 +43,7 @@ const validateInputs = () => {
     const passwordValue = password.value.trim();
     const password2Value = password2.value.trim();
     const ageValue = age.value.trim();
-    const stateValue = state.value.trim();
+    // const stateValue = state.value.trim();
     const cityValue = city.value.trim();
 
     if(usernameValue === '') {
@@ -79,8 +79,9 @@ const validateInputs = () => {
     if(stateValue === ''){
         setError(state,'State is required');
     }
+
     else{
-        setSuccess(age);
+        setSuccess(state);
     }
 
     if(cityValue === ''){
@@ -103,18 +104,7 @@ const validateInputs = () => {
     else{
         setSuccess(age);
     }
-    if(ageValue === ''){
-        setError(age,'Age is required');
-    }
-    else if(ageValue < 16 ){
-        setError(age, 'Age cannot be less than 16 for this website');
-    }
-    else if(ageValue > 120){
-        setError(age, 'Age is more thn 120, please input valid age');
-    }
-    else{
-        setSuccess(age);
-    }
+    
 
     if(passwordValue === '') {
         setError(password, 'Password is required');

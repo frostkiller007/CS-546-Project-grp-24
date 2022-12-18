@@ -26,11 +26,12 @@ router.route("/").get(async (req, res) => {
     if (req.session.user)
       userRegister = await userData.getUserByUserId(req.session.user.id);
 
-    // let allPost = await postData.getAllPosts();
-    // for (let i = 0; i < allPost.length; i++) {
-    //     let temp = await userData.getUserById(allPost[i].userId);
-    //     allPost[i].userNickname = temp.nickname;
-    //   }
+    let allPost = await postData.getAllPosts();
+    
+    for (let i = 0; i < allPost.length; i++) {
+        let userInfo = await userData.getUserByUserId(allPost[i].userId);
+        allPost[i].username = userInfo.username;
+      }
     // allPost.forEach(async (element) => {
     //   let userInfo = await userData.getUserByUserId(element.userId);
     //   allPost.userName = userInfo.userName;
@@ -41,7 +42,7 @@ router.route("/").get(async (req, res) => {
     // res.send({ allPost, userRegister });
     // res.status(200).json(allPost);
 
-    res.render("mainPage/home", { title: "Home Page" });
+    res.render("mainPage/home", { title: "Home Page", allPost });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });

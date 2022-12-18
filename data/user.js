@@ -12,14 +12,16 @@ const createUser = async (
   email,
   age,
   city,
-  state,
+  //state,
   // postID,
-  password
+  password,
+  password2
 ) => {
   userName = valid.checkUserName(userName);
   email = valid.checkEmail(email);
   age = valid.checkAge(age);
   city = valid.checkCity(city);
+  if(password !== password2) throw 'Error: You must enter same password';
   password = valid.checkPassword(password);
 
   const usersCollection = await users();
@@ -38,7 +40,7 @@ const createUser = async (
     email: email,
     age: age,
     city: city,
-    state: state,
+    //state: state,
     post: [],
     password: hashedPassword,
   };

@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-// const data = require('../data');
-// const userData = data.user;
 const userData = require("../data/user.js");
-//const postData = data.post;
 const valid = require("../helper.js");
+const bcrypt = require("bcrypt");
+const xss = require("xss");
+let saltRounds = 10;
 
 // const { async } = require("seed/lib/seed");
 
@@ -27,17 +27,24 @@ router
     res.redirect("/mainPage");
   })
   .post(async (req, res) => {
-    const usersData = req.body;
+    // const usersData = req.body;
     //TODO: validation
     try {
+      username = xss(req.body.username);
+      email = xss(req.body.email);
+      age = xss(req.body.age);
+      city = xss(req.body.city);
+      state = xss(req.body.state);
+      postID = xss(req.body.postID);
+      password = xss(req.body.password);
       const newUser = await userData.createUser(
-        usersData.username,
-        usersData.email,
-        usersData.age,
-        usersData.city,
-        usersData.state,
-        //usersData.postID,
-        usersData.password
+        username,
+        email,
+        age,
+        city,
+        state,
+        postID,
+        password
       );
       // if(newUser){
       //   res.status(200).render('mainPage/login',{title:'Login'});
@@ -64,20 +71,31 @@ router
     res.render("mainPage/login");
   })
   .post(async (req, res) => {
-    let usersData = req.body;
-    email = valid.checkEmail(usersData.email);
-    password = valid.checkPassword(usersData.password);
-    let usernameDB = await userData.getUserByEmail(email);
     try {
+      let usersData = req.body;
+      let email = xss(req.body.email);
+      let password = xss(req.body.password);
+      email = valid.checkEmail(usersData.email);
+      password = valid.checkPassword(usersData.password);
+      let usernameDB = await userData.getUserByEmail(email);
       const loginUser = await userData.verifyUser(
         usersData.email,
         usersData.password
       );
+      let admin =
+        usersData.email.toLowerCase() ===
+        "Admin214@gmail.com".toLocaleLowerCase();
+
       if (loginUser) {
         req.session.AuthCookie = usersData.email;
-        req.session.user = { email: usersData.email, username: usernameDB };
+        req.session.user = {
+          email: usersData.email,
+          username: usernameDB,
+          id: loginUser.id,
+          isAdmin: admin,
+        };
         req.session.login = loginUser.authenticatedUser;
-        res.redirect("/mainPage");
+        return res.redirect("/mainPage");
       } else {
         return res.status(401).render("mainPage/login", {
           error: "Provide a valid username and/or password",
@@ -100,42 +118,110 @@ router.route("/logout").get(async (req, res) => {
 router
   .route("/profile")
   .get(async (req, res) => {
-    let usersData = req.body;
+    const usersData = req.session.user;
     console.log(req.session);
     if (req.session.user) {
       try {
-        const userID = await userData.getUserById(usersData.user);
+        const user = await userData.getUserByUsername(usersData.username);
         //const userPosts = await postData.getPostById(userID);
         //Get all post by user
+        // console.log(user);
+        return res.render("profilePage/profile", {
+          username: user.username,
+          email: user.email,
+          age: user.age,
+          city: user.city,
+          state: user.state,
+        });
       } catch (e) {
         //TODO
         res.status(404).json({ error: "Invalid user" });
-      }}
-    else{
+      }
+    } else {
       return res.redirect("/mainPage");
     }
   })
   .post(async (req, res) => {
     let usersData = req.body;
-    const user_ = req.session.user;
-    console.log(req.session)
+    const username = req.session.user.username;
+
     let userExists;
-    try{
-      userExists = await userData.getUserById(user_);
-    }catch(e){
+    try {
+      userExists = await userData.getUserByUsername(username);
+    } catch (e) {
       //TODO
-      res.status(404).json({error: 'User not found'});
+      res.status(404).json({ error: "User not found" });
     }
-    try{
-      if(username){
-        if(usersData.username == userExists.username) throw "Error: Updated username must be differnt from previous";
-        const updatedInfo = await userData.updateUsername(usersData.username, usersData.userID);
-        if(updatedInfo){
+    try {
+      if (usersData.username) {
+        if (usersData.username == userExists.username)
+          throw "Error: Updated username must be differnt from previous";
+        const updatedInfo = await userData.updateUsername(
+          usersData.username,
+          userExists._id
+        );
+        if (updatedInfo) {
           return res.render("profilePage/profile");
         }
-      
+      } else if (usersData.state) {
+        if (usersData.state == userExists.state)
+          throw "Error: Updated state must be differnt from previous";
+        const updatedInfo = await userData.updateState(
+          usersData.state,
+          userExists._id
+        );
+        if (updatedInfo) {
+          return res.render("profilePage/profile");
+        }
+      } else if (usersData.city) {
+        if (usersData.city == userExists.city)
+          throw "Error: Updated city must be differnt from previous";
+        const updatedInfo = await userData.updateCity(
+          usersData.city,
+          userExists._id
+        );
+        if (updatedInfo) {
+          return res.render("profilePage/profile");
+        }
+      } else if (usersData.password) {
+        //if(usersData.password !== usersData.confirmPassword) throw "Error: Both passwords should match";
+        hashedPassword = await bcrypt.hash(usersData.password, saltRounds);
+
+        const updatedInfo = await userData.updatePassword(
+          hashedPassword,
+          userExists._id
+        );
+        if (updatedInfo) {
+          return res.render("profilePage/profile");
+        }
       }
-    }catch(e){
+    } catch (e) {
+      res.status(400).json({ err: e });
     }
-  })
+  }),
+  router.route("/profile/update").patch(async (req, res) => {
+    // hajd;
+    // if
+  });
+router.route("/viewProfile/:id").get(async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.redirect("/mainPage");
+    } else {
+    }
+  } catch (e) {
+    res.status(400).json({ err: e });
+  }
+});
+//   .post(async (req, res) => {
+//     try {
+// 	if (!req.session.user) {
+// 	      return res.redirect("/mainPage");
+// 	    } else {
+// 	    }
+// } catch (e) {
+//   res.status(400).json({err:e})
+
+// }
+//   });
 module.exports = router;

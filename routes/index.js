@@ -4,6 +4,7 @@ const chatRoutes = require("./chat");
 const commentRoutes = require("./comment");
 const mainPageRoutes = require("./mainPage");
 const reportRoutes = require("./report");
+const xss = require("xss");
 
 const constructorMethod = (app) => {
   app.use("/mainPage", mainPageRoutes);
@@ -22,4 +23,3 @@ const constructorMethod = (app) => {
 };
 
 module.exports = constructorMethod;
-// module.exports = app;

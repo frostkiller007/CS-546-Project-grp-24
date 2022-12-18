@@ -1,70 +1,184 @@
+<body>
+  <header>
+    <div class="cd-logo"><a href="">
+            <!-- <img src="img/handouts-logo.png" width="100%" height="60%" alt=""> -->
+    </a></div>
 
-   
-<main>
-      <h1>{{title}}</h1>
+    <nav class="cd-main-nav-wrapper">
+        <ul class="cd-main-nav">
+            <li><a href="/mainPage">Home</a></li>
+            <li><a href="/profilePage/profile">Profile</a></li>
+            <li><a href="/user/login">Login</a></li>
+            <li><a href="/user/register">Signup</a></li>
+            <li><a href="/profile.html">Chats</a></li>
+           
+            </li> 
+        </ul> <!-- .cd-main-nav -->
+    </nav> <!-- .cd-main-nav-wrapper -->
+    
+    <a href="#0" class="cd-nav-trigger">Menu<span></span></a>
+</header>
+<link rel="stylesheet" href="../public/css/profile_pic.css">
+<div class="ScriptTop">
+    <div class="rt-container">
+        <div class="col-rt-4" id="float-right">
+ 
+            <!-- Ad Here -->
+            
+        </div>
+        
+    </div>
+</div>
 
-    <div id="container_1">
 
-        <h1 id="title">
-          Handouts Registration
-        </h1>
-        <!--title-->
-        <p id="description">
-          Enter the required data in the boxes.
-        </p>
-        <!--description--->
-      
+<section>
+    <div class="rt-container">
+          <div class="col-rt-12">
+              <div class="Scriptcontent">
+              
+<!-- Student Profile -->
+<div class="student-profile py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent text-center">
+            <input id="file" type="file" onchange="loadFile(event)"/>
+          <img class="profile_img" src="../public/img/username.png" alt="student dp" id="output" width="200">
+            <h3 class="username">{{username}}</h3>
+            <script src="../public/js/profile_javascript.js"></script>
+          </div>
+          <div class="card-body">
+            <p class="mb-0"><strong class="pr-1"></strong>321000001</p>
+            <p class="mb-0"><strong class="pr-1">Class:</strong>4</p>
+            <p class="mb-0"><strong class="pr-1">Section:</strong>A</p>
+          </div>
+        </div>
       </div>
-      <!---container_1--->
-      <div id="container_2">
-      
-        <form id="survey-form">
-          <label id="name-label">Name</label>
-          <input type="text" id="name" name="name" class="form" required placeholder="Insert your name"><br>
-          <!--name--->
-          <label id="email-label">Email</label>
-          <input type="email" id="email" name="email" class="form" required placeholder="Insert your email"><br>
-          <!---email-->
-          <label id="number-label">Age</label>
-          <input type="number" id="number" name="number" class="form" placeholder="Age" min=18 max=60 required><br>
-          <!---number-->
-          <p>Location</p>
-          <label id="state-label">State</label>
-          <input type="text" id="state" name="state" class="form" required placeholder="Input State"><br>
-          <!--state--->
-          <label id="city-label">City</label>
-          <input type="text" id="city" name="city" class="form" required placeholder="Input City"><br>
-          <!---city-->
-          <label id="password-label">Password</label>
-          <input type="text" id="password" name="password" class="form" required placeholder="Input Password"><br>
-          <!---password-->
-
-          <br><br>
-          <!---comment-->
-      
-          <input type="submit" id="submit" name="submit" value="Submit">
-        </form>
-        <!---survey-form--->
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent border-0">
+            <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
+          </div>
+          <div class="card-body pt-0">
+            <table class="table table-bordered">
+              <tr>
+                <th width="30%">State</th>
+                <td width="2%">:</td>
+                <td>New Jersey</td>
+              </tr>
+              <tr>
+                <th width="30%">City	</th>
+                <td width="2%">:</td>
+                <td>Hoboken</td>
+              </tr>
+              <tr>
+                <th width="30%">Age</th>
+                <td width="2%">:</td>
+                <td>22</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+          <div style="height: 26px"></div>
+        
       </div>
-      <!--container_2--->
+    </div>
+  </div>
+</div>
+<!-- partial -->
+             <div class="row">
+        <div class="col-sm-4">
+            <br/>
+            <form action="/user/profile" method="post">
+                <div class="form-group">
+                    <label class="noPost" for="email">Your email:</label>
+                    <p class="usercenterName">{{email}}</p>
+                    <input type="email" autocomplete="email" class="form-control" id="email" name="email" placeholder="Your new email">
+                    <br> 
+                    <input type="submit" id="upUButton" class="form-control button btn btn-danger" value="Update email">
+      <div class="container">
+                <br>
+                </div>
+            </form>
+            <div class="rightMsg">
+                {{#unless status}}
+                <p>{{success1}}</p >
+                {{/unless}}
+            </div>
+            <div class="wrongMsg">
+                {{#unless status}}
+                    <p>{{message1}}</p>
+                {{/unless}}
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-sm-4">
+            <br/>
+            <form action="/user/profile/update" method="post">
+                <div class="form-group">
+                    <label class="noPost" for="username">Your username:</label>
+                    <p class="usercenterName"> 
+                      {{username}}</p>
+                    <input type="text" autocomplete="off" class="form-control" id="username" name="username" placeholder="Your new username">
+                    <br>
+                    <input type="submit" id="upNButton" class="form-control button btn btn-danger" value="Update username">
+                    <br>
+                </div>
+            </form>
+            <div class="rightMsg">
+                {{#unless status}}
+                <p>{{success2}}</p >
+                {{/unless}}
+            </div>
+            <div class="wrongMsg">
+                {{#unless status}}
+                    <p>{{message2}}</p>
+                {{/unless}}
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-sm-4">
+            <br/>
+            <form action="/user/profile" method="post">
+                <div class="form-group">
+                    <label class="noPost" for="password">New Password:</label><br>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Your new Password">
+                    <br>
+                    <label class="noPost" for="Cpassword">Confirm Password:</label><br>
+                    <input type="password" class="form-control" id="Cpassword" name="Cpassword" placeholder="Confirm new Password">
+                    <br>
+                    <input type="submit" id="upPButton" class="form-control button btn" value="Update Password">
+                </div>
+            </form>
+            <div class="rightMsg">
+                {{#unless status}}
+                <p>{{success3}}</p >
+                {{/unless}}
+            </div>
+            <div class="wrongMsg">
+                {{#unless status}}
+                    <p>{{message3}}</p>
+                {{/unless}}
+            </div>
+        </div>
+    </div>
 
-<dl>
-  <dt>name-label</dt>
-  <dd>{{id}}</dd>
-  <dt>First Name</dt>
-  <dd>{{fname}}</dd>
-  <dt>Last Name</dt>
-  <dd>{{lname}}</dd>
-  <dt>Address</dt>
-  <dd>{{address}}</dd>
-  <dt>Zip Code</dt>
-  <dd>{{z_code}}</dd>
-  <dt>Phone</dt>
-  <dd>{{pno}}</dd>
-  <dt>Social Security Number</dt>
-  <dd>{{ssn}}</dd>
-</dl> 
+    <div class="wrongMsg">
+        {{#unless status}}
+            <p>{{message4}}</p>
+        {{/unless}}
+    </div>
 
-</main>
+    		</div>
+		</div>
+    </div>
+</section>
+     
+<script src="../../public/js/profile_javascript.js"></script>
+
+	</body>

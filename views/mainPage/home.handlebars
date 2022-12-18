@@ -6,7 +6,7 @@
     
             <nav class="cd-main-nav-wrapper">
                 <ul class="cd-main-nav">
-                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/mainPage">Home</a></li>
                     <li><a href="/user/profile">Profile</a></li>
                     <li><a href="/user/login">Login</a></li>
                     <li><a href="/user/register">Signup</a></li>
@@ -36,65 +36,124 @@
         <!-- Post editor -->
         <div class="col-md-offset-3 col-md-6 col-xs-12">
                 <div class="well well-sm well-social-post">
-            <form>
+            <form id="form" action="/mainPage/createPost" method="POST">
                 <ul class="list-inline" id="list_PostActions">
                     <li class="active"><a href="#">New Post</a></li>
                 </ul>
-                <textarea class="form-control" placeholder="Give Something Away..."></textarea>
-                <ul class="list-inline post-actions">
+                {{!-- TODO                 --}}
+                <textarea name="description" class="form-control description" id="description" placeholder="Give Something Away..."></textarea>
+                {{!-- <input id="description" name="description" type="text" placeholder="Give Something Away..."> --}}
+
+                <br>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="electronics">Electronics
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="homegoods">Home Goods
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="fashion">Fashion
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="vehicles">Vehicles
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="officegoods">Office Goods
+                    </label>            
+                {{!-- <ul class="list-inline post-actions">
                     <li><a href="#" class="hvr-icon-up">
                             <i class="far fa-file-image hvr-icon"></i>
                         </a>
                     </li>
-                    <!-- <li>
-                        <a href="#" class="hvr-icon-rotate">
-                                <i class="fas fa-paperclip hvr-icon"></i>
-                        </a>
-                    </li> -->
-                    <li class="pull-right" ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li>
-                </ul>
+                 </ul> --}}
+                    {{!-- <li class="pull-right" ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li> --}}
+               
+                {{!-- <div>
+                    <label class="btn btn-default fileinput-button">
+                        <span>Choose photos</span>
+                        <input name="photoArr" id="addImg" type="file" accept="image/jpg, image/png, image/jpeg, image/gif, image/tiff" multiple>
+                    </label>
+                     <button type="submit">Submit</button>
+                </div> --}}
+                <input type="file" name="picture" accept="image/*" class="btn" required/>
+                <button type ="submit">Submit</button>
+                {{!-- <input id="addNewPostButton" name="submit" type="button" class="btn AllButton" value="Submit" data-toggle="button" aria-pressed="false" autocomplete="off"> --}}
+                 {{!-- <input type="submit" class = "btn" value="Upload Photo"/> --}}
+                {{!-- <form action="/mainPage/createPost" enctype="multipart/form-data" method="POST"> 
+                    <input type="file" name="picture" accept="image/*" class="btn" required/>
+                    <input type="submit" class = "btn" value="Upload Photo"/>
+                </form> --}}
+               
             </form>
                 </div>
             </div>                                                          
+            <!--TrYYYYYYY-->
+
+           
         <!-- End Post editor -->
         <div class="col-md-offset-3 col-md-6 col-xs-12">
             <div class="well well-sm well-social-post">
         <form>
             <ul class="list-inline" id="list_PostActions">
-                <li class="active"><a href="#">Sort</a></li>
-                <form action="/action_page.php" >
+                <li class="active"><a href="#">Sort:</a></li>
                     <select name="sort" id="list">
-                      <option value="Recent">Recent</option>
-                      <option value="Liked">Most Liked</option>
+                      <option value="recent">Recent</option>
+                      <option value="liked">Most Liked</option>
                     </select>
-                  </form>
-            </ul>
-            
-            <!-- <textarea class="form-control" placeholder="Give Something Away..."></textarea> -->
-            <!-- <ul class="list-inline post-actions">
-                <li><a href="#" class="hvr-icon-up">
-                    <li ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li>
-                </a>
-                </li>
-                <li><a href="#" class="hvr-icon-up">
-                    <li ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li>
-                </a>
-                </li> -->
-                <!-- <li>
-                    <a href="#" class="hvr-icon-rotate">
-                            <i class="fas fa-paperclip hvr-icon"></i>
-                    </a>
-                </li> -->
-                <!-- <li class="pull-right" ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li> -->
-           
+            </ul>   
+        <ul class="list-inline" id="list_PostActions">
+                <li class="active"><a href="#"></a></li>
+              
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Electronics
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Home Goods
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Fashion
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Vehicles
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Office Goods
+    </label>                  
         </form>
-            </div>
-        </div>           
+        </div>
+    </div> 
+
+        
         <!-- First Post type form -->
 		<br>
         <!-- Second Post type form (post with pic)-->
+         {{!-- {{#each allPost}} --}}
+         {{!-- TODO --}}
+         <div class="col-sm-8">
+                {{#each allPost}}
+                    <div class="media post-part">
+                        <div class="media-left ">
+                            <div class="photoContainer">
+                                <a href='http://localhost:3000/posts/postInfo/{{this._id}}'>
+                                    <img class="media-object user-Pic" src={{images.image}}>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading postTopic"><a class="jumpToPost" id={{this._id}} href="#">{{this.topic}}</a></h4>
+                            <p class="AllContent">{{this.content}}</p>
+                        </div>
+                    </div>
+                {{else}}
+                        <div>
+                            <h2 class="noPost">Oops! No post.</h2>
+                        </div>
+                {{/each}}
+            </div>
+            {{!-- todo --}}
         <div class="col-md-offset-3 col-md-6 col-xs-12">
                 <section class="widget">
+                  
                     <div class="widget-controls">
                             <a href="#"></a>
                             <a href="javascript:void(0)" class="dropbtn" data-widgster="close">
@@ -113,14 +172,17 @@
                                     </div>
                         </a>
                     </div>
+                
                     <div class="widget-body">
                         <div class="widget-top-overflow text-white">
                                 <!-- <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox data-caption="Caption for single image">
                                         <img class="cover"src="https://lorempixel.com/800/400/nature/4/" style="width:800px;height:400px;" />
                                 </a> -->
-                                <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox="images" data-caption="Lots of cool stuff is happening around you. Just calm down for a sec and listen. Colors, sounds, thoughts, ideas">
-                                        <img src="https://lorempixel.com/800/400/nature/4/" style="width:556px;height:400px;"  class="cover" />
-                                </a>
+                                {{!-- <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox="images" data-caption="Lots of cool stuff is happening around you. Just calm down for a sec and listen. Colors, sounds, thoughts, ideas"> --}}
+                                       {{!-- <a>
+                                        <img src={{['images']['image']}} style="width:556px;height:400px;"  class="cover" />
+                                        </a> --}}
+                                {{!-- </a> --}}
                             <!-- <img  class="cover" src="https://lorempixel.com/800/400/nature/4/"style="width:800px;height:400px;"> -->
                             <!-- <ul class="tags text-white pull-right">
                                 <li><a href="#">design</a></li>
@@ -182,8 +244,8 @@
                             </ul>
                         </footer>
                 </section>   
-            </div>
-
+        </div>
+        {{!-- {{/each}} --}}
 	</div>
 </div>
 
@@ -209,6 +271,7 @@
             currentAction = self;
         });
     });
+
 </script>
 	
 </script>

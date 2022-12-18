@@ -37,15 +37,7 @@ app.use("/mainPage", (req, res, next) => {
   }
   next();
 });
-app.use("/profile", (req, res, next) => {
-  if (!req.session.login) {
-    return res.status(403).render("mainPage/home", {
-      notLogged: true,
-      title: `Main Page (not logged)`,
-    }); // not loggedin page
-  }
-  next();
-});
+
 //Logging Middleware
 app.use((req, res, next) => {
   let timeStamp = new Date().toUTCString();
@@ -77,3 +69,13 @@ app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
 });
+//===========================================================================
+// Admin user
+// {
+//   "username":"Admin",
+//   "email":"Admin214@gmail.com",
+//   "age":"35",
+//   "city":"Hoboken",
+//   "state":"NJ",
+//   "password":"1Admin214@gmail.com"
+//  }

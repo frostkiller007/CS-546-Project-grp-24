@@ -73,6 +73,7 @@ const getUserByEmail = async (email) => {
 
   return user.username;
 };
+
 const verifyUser = async (email, password) => {
   email = valid.checkEmail(email, "email");
   password = valid.checkPassword(password, "password");
@@ -171,6 +172,7 @@ const updatePassword = async (password, userID) => {
 
 module.exports = {
   createUser,
+  checkAdmin,
   getUserByUsername,
   getUserByEmail,
   verifyUser,

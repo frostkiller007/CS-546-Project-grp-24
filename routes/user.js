@@ -30,13 +30,13 @@ router
     //TODO: validation
     try {
       const newUser = await userData.createUser(
-        usersData.username,
-        usersData.email,
-        usersData.age,
-        usersData.city,
-        usersData.state,
-        //usersData.postID,
-        usersData.password
+        req.body.username,
+        req.body.email,
+        req.body.age,
+        req.body.city,
+        req.body.state,
+        //req.body.postID,
+        req.body.password
       );
       // if(newUser){
       //   res.status(200).render('mainPage/login',{title:'Login'});
@@ -63,21 +63,26 @@ router
     res.render("mainPage/login");
   })
   .post(async (req, res) => {
-    let usersData = req.body;
-    email = valid.checkEmail(usersData.email);
-    password = valid.checkPassword(usersData.password);
-    let usernameDB = await userData.getUserByEmail(email);
     try {
+      let usersData = req.body;
+      email = valid.checkEmail(usersData.email);
+      password = valid.checkPassword(usersData.password);
+      let usernameDB = await userData.getUserByEmail(email);
       const loginUser = await userData.verifyUser(
         usersData.email,
         usersData.password
       );
+      let admin =
+        usersData.email.toLowerCase() ===
+        "Admin214@gmail.com".toLocaleLowerCase();
+
       if (loginUser) {
         req.session.AuthCookie = usersData.email;
         req.session.user = {
           email: usersData.email,
           username: usernameDB,
           id: loginUser.id,
+          isAdmin: admin,
         };
         req.session.login = loginUser.authenticatedUser;
         res.redirect("/mainPage");
@@ -104,13 +109,13 @@ router
   .route("/profile")
   .get(async (req, res) => {
     const usersData = req.session.user;
-    // console.log(req.session);
+    console.log(req.session);
     if (req.session.user) {
       try {
         const user = await userData.getUserByUsername(usersData.username);
         //const userPosts = await postData.getPostById(userID);
         //Get all post by user
-        console.log(user);
+        // console.log(user);
         return res.render("profilePage/profile", {
           username: user.username,
           email: user.email,

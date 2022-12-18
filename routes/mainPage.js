@@ -2,7 +2,23 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const userData = data.user;
-const postData = data.post;
+const postData = require("../data/post.js");
+const path = require('path');
+const multer = require('multer');
+
+var fs = require('fs');
+// SET STORAGE
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+ 
+var upload = multer({ storage: storage })
+
 router.route("/").get(async (req, res) => {
   try {
     let userRegister = null;
@@ -66,54 +82,27 @@ router.route("/search").get(async (req, res) => {
     else res.status(400).json({ error: e });
   }
 });
-router.route("/createPost").get(async (req, res) => {
+router
+//.route("/createPost")
+router.post('/createPost', upload.single('picture'), async (req, res) => {
   if (!req.session.user){
     return res.render("mainPage/home", { message: 'Must be login to create post'});
   }
-  const form = new formidable.IncomingForm();
-    form.uploadDir = path.join(__dirname, '../', 'public', 'img');
-    form.keepExtensions = true;
-    form.parse(req, async (err, fields, files) => {
-        try {//topic, userid, caption, images, tagsArray
-            if (!fields)
-                throw "need data to create post";
-            if (!fields.topic)
-                throw "need topic to create post "
-            if (!fields.caption)
-                throw "need caption to create post"
-            if (!fields.tagsArray)
-                throw "need a tagsArray String to create post";
-            let tagsArray = JSON.parse(fields.tagsArray);
-            if (!Array.isArray(tagsArray))
-                throw "need a tagsArray to create post";
-            let photoArr = [];
+  const description = req.body.description;
+  const tagsArray = req.body.tag;
+  var img = fs.readFileSync(path.join(__dirname, '../', 'public/img', req.body.picture));
+  var encode_image = img.toString('base64');
+  let username = req.session.user.username;
+  var finalImg = {
+      contentType: 'image/jpg',
+      image: Buffer.from(encode_image, 'base64')
+  };
 
-            if (files.photo0)
-                photoArr.push("http://localhost:3000/public/img/" + files.photo0.path.split('img\\')[1]);
-            if (files.photo1)
-                photoArr.push("http://localhost:3000/public/img/" + files.photo1.path.split('img\\')[1]);
-            if (files.photo2)
-                photoArr.push("http://localhost:3000/public/img/" + files.photo2.path.split('img\\')[1]);
-            
-            let newPost = await postData.createPost(
-                fields.topic,
-                req.session.username,
-                fields.caption,
-                photoArr,
-                tagsArray
-            )
-            res.send(newPost);
-        } catch (error) {
-            res.status(404).send(error);
-        }
-      })
-     
+  const addPost = await postData.AddPost(//"topic",
+   username, description, finalImg, tagsArray);
+  return res.render("mainPage/home");
   
-  try {
-    
-  } catch (e) {
-    if (e.code) res.status(e.code).json({ error: e.err });
-    else res.status(400).json({ error: e });
-  }
-});
+  //https://www.geeksforgeeks.org/how-to-upload-file-using-formidable-module-in-node-js/
+ });
+
 module.exports = router;

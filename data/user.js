@@ -20,7 +20,6 @@ const createUser = async (
   email = valid.checkEmail(email);
   age = valid.checkAge(age);
   city = valid.checkCity(city);
-  // posts = helper.arraycheck(posts);
   password = valid.checkPassword(password);
 
   const usersCollection = await users();
@@ -40,7 +39,7 @@ const createUser = async (
     age: age,
     city: city,
     state: state,
-    // posts: [],
+    post: [],
     password: hashedPassword,
   };
 
@@ -60,6 +59,17 @@ const getUserByUsername = async (username) => {
   const usersCollection = await users();
   const user = await usersCollection.findOne({ username: username });
   if (user === null) throw "There is no user with the provided username";
+
+  return user;
+};
+
+const getUserByUserId = async (userId) => {
+  if (!ObjectId.isValid(userId))
+    throw "The provided userID not a valid objectID";
+
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({ _id: ObjectId(userId) });
+  if (user === null) throw "There is no user with the provided userId";
 
   return user;
 };
@@ -170,6 +180,14 @@ const updatePassword = async (password, userID) => {
   return state;
 };
 
+async function addPostUser(userId, postId) { 
+  const userCollection = await users();
+  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userId) }, { $addToSet: {post: postId} });
+  if (updateInfo.modifiedCount === 0)
+  throw "Error: Can not add post to user";
+return await getUserByUserId(userId);
+};
+
 module.exports = {
   createUser,
   getUserByUsername,
@@ -179,4 +197,6 @@ module.exports = {
   updatePassword,
   updateCity,
   updateState,
+  getUserByUserId,
+  addPostUser
 };

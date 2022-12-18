@@ -1,0 +1,278 @@
+<body>
+    	<header>
+            <div class="cd-logo"><a href="">
+                    <!-- <img src="img/handouts-logo.png" width="100%" height="60%" alt=""> -->
+            </a></div>
+    
+            <nav class="cd-main-nav-wrapper">
+                <ul class="cd-main-nav">
+                    <li><a href="/mainPage">Home</a></li>
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/user/login">Login</a></li>
+                    <li><a href="/user/register">Signup</a></li>
+                    <li><a href="/profile.html">Chats</a></li>
+                    {{!-- <li>
+                        <a href="" class="cd-subnav-trigger"><span>Categories</span></a>
+    
+                        <ul>
+                            <li><a href="/users.html">Users</a></li>
+                            <li><a href="/reports.html">Reports</a></li>
+                            <li><a href="#0" class="placeholder">Placeholder</a></li>
+                        </ul>
+                    </li> --}}
+                </ul> <!-- .cd-main-nav -->
+            </nav> <!-- .cd-main-nav-wrapper -->
+            
+            <a href="#0" class="cd-nav-trigger">Menu<span></span></a>
+    </header>
+        
+            
+ 
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" crossorigin="anonymous"><div class="container bootstrap snippet">
+        
+    <div class="row">
+        
+        <!-- Post editor -->
+        <div class="col-md-offset-3 col-md-6 col-xs-12">
+                <div class="well well-sm well-social-post">
+            <form id="form" action="/mainPage/createPost" method="POST">
+                <ul class="list-inline" id="list_PostActions">
+                    <li class="active"><a href="#">New Post</a></li>
+                </ul>
+                {{!-- TODO                 --}}
+                <textarea name="description" class="form-control description" id="description" placeholder="Give Something Away..."></textarea>
+                {{!-- <input id="description" name="description" type="text" placeholder="Give Something Away..."> --}}
+
+                <br>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="electronics">Electronics
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="homegoods">Home Goods
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="fashion">Fashion
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="vehicles">Vehicles
+                    </label>
+                    <label class="checkbox-inline">
+                    <input name="tag" type="checkbox" value="officegoods">Office Goods
+                    </label>            
+                {{!-- <ul class="list-inline post-actions">
+                    <li><a href="#" class="hvr-icon-up">
+                            <i class="far fa-file-image hvr-icon"></i>
+                        </a>
+                    </li>
+                 </ul> --}}
+                    {{!-- <li class="pull-right" ><a href="#" class="btn btn-primary btn-xs" style:"background-color:#189995;" >Share</a></li> --}}
+               
+                {{!-- <div>
+                    <label class="btn btn-default fileinput-button">
+                        <span>Choose photos</span>
+                        <input name="photoArr" id="addImg" type="file" accept="image/jpg, image/png, image/jpeg, image/gif, image/tiff" multiple>
+                    </label>
+                     <button type="submit">Submit</button>
+                </div> --}}
+                <input type="file" name="picture" accept="image/*" class="btn" required/>
+                <button type ="submit">Submit</button>
+                {{!-- <input id="addNewPostButton" name="submit" type="button" class="btn AllButton" value="Submit" data-toggle="button" aria-pressed="false" autocomplete="off"> --}}
+                 {{!-- <input type="submit" class = "btn" value="Upload Photo"/> --}}
+                {{!-- <form action="/mainPage/createPost" enctype="multipart/form-data" method="POST"> 
+                    <input type="file" name="picture" accept="image/*" class="btn" required/>
+                    <input type="submit" class = "btn" value="Upload Photo"/>
+                </form> --}}
+               
+            </form>
+                </div>
+            </div>                                                          
+            <!--TrYYYYYYY-->
+
+           
+        <!-- End Post editor -->
+        <div class="col-md-offset-3 col-md-6 col-xs-12">
+            <div class="well well-sm well-social-post">
+        <form>
+            <ul class="list-inline" id="list_PostActions">
+                <li class="active"><a href="#">Sort:</a></li>
+                    <select name="sort" id="list">
+                      <option value="recent">Recent</option>
+                      <option value="liked">Most Liked</option>
+                    </select>
+            </ul>   
+        <ul class="list-inline" id="list_PostActions">
+                <li class="active"><a href="#"></a></li>
+              
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Electronics
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Home Goods
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Fashion
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Vehicles
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">Office Goods
+    </label>                  
+        </form>
+        </div>
+    </div> 
+
+        
+        <!-- First Post type form -->
+		<br>
+        <!-- Second Post type form (post with pic)-->
+         {{!-- {{#each allPost}} --}}
+         {{!-- TODO --}}
+         <div class="col-sm-8">
+                {{#each allPost}}
+                    <div class="media post-part">
+                        <div class="media-left ">
+                            <div class="photoContainer">
+                                <a href='http://localhost:3000/posts/postInfo/{{this._id}}'>
+                                    <img class="media-object user-Pic" src={{images.image}}>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading postTopic"><a class="jumpToPost" id={{this._id}} href="#">{{this.topic}}</a></h4>
+                            <p class="AllContent">{{this.content}}</p>
+                        </div>
+                    </div>
+                {{else}}
+                        <div>
+                            <h2 class="noPost">Oops! No post.</h2>
+                        </div>
+                {{/each}}
+            </div>
+            {{!-- todo --}}
+        <div class="col-md-offset-3 col-md-6 col-xs-12">
+                <section class="widget">
+                  
+                    <div class="widget-controls">
+                            <a href="#"></a>
+                            <a href="javascript:void(0)" class="dropbtn" data-widgster="close">
+                                    <div class="dropdownpost">
+                                            <i class="fas fa-ellipsis-h" style="color:white; font-size:15px;"></i>
+                                            <div class="dropdown-contentpost">
+                                                <a href="#">
+                                                            <i class="fas fa-edit"></i>
+                                                            Edit
+                                                </a>
+                                                <a href="#">
+                                                    <i class="fas fa-trash" style="color:red; font-size:11px;"></i>
+                                                    Delete
+                                                </a>
+                                            </div>
+                                    </div>
+                        </a>
+                    </div>
+                
+                    <div class="widget-body">
+                        <div class="widget-top-overflow text-white">
+                                <!-- <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox data-caption="Caption for single image">
+                                        <img class="cover"src="https://lorempixel.com/800/400/nature/4/" style="width:800px;height:400px;" />
+                                </a> -->
+                                {{!-- <a href="https://lorempixel.com/800/400/nature/4/" data-fancybox="images" data-caption="Lots of cool stuff is happening around you. Just calm down for a sec and listen. Colors, sounds, thoughts, ideas"> --}}
+                                       {{!-- <a>
+                                        <img src={{['images']['image']}} style="width:556px;height:400px;"  class="cover" />
+                                        </a> --}}
+                                {{!-- </a> --}}
+                            <!-- <img  class="cover" src="https://lorempixel.com/800/400/nature/4/"style="width:800px;height:400px;"> -->
+                            <!-- <ul class="tags text-white pull-right">
+                                <li><a href="#">design</a></li>
+                                <li><a href="#">white</a></li>
+                            </ul> -->
+                        </div>
+                        <div class="post-user mt-sm">
+                            <span class="thumb pull-left mr">
+                                <img class="img-circle" src="https://bootdey.com/img/Content/user_2.jpg" alt="...">
+                            </span>
+                            <h5 class="mb-xs mt-xs"><span class="fw-semi-bold">Maryna</span> Nilson</h5>
+                            <p class="fs-mini text-muted"><time>25 mins</time>
+                                 <!-- &nbsp; <i class="fa fa-map-marker"></i> &nbsp; near Amsterdam</p> -->
+                        </div>
+                        <p class="text-light fs-mini m">Lots of cool stuff is happening around you. Just calm down for a sec and listen. Colors, sounds,
+                            thoughts, ideas. </p>
+                    </div>
+                    <footer class="bg-body-light">
+                            <ul class="post-links"> 
+                                <!-- like and comment footer -->
+                                <li><a href="#">10
+                                    <i class="far fa-thumbs-up"></i>                                     
+                                    </a></li>
+                                <li><a href="#">32
+                                    <i class="far fa-comment-dots"></i>
+                                 </a></li>
+                                 <li style="float:right"><a href="#">
+                                Report
+                                </a></li>
+                            </ul>
+                            <!-- show comments -->
+                            <ul class="post-comments mt mb-0">
+                                <li>
+                                    <div class="thumb-xs avatar pull-left mr-sm">
+                                            <!-- show the avatat of the post owner -->
+                                            <div class="drpdn">
+                                                    <img src="https://bootdey.com/img/Content/user_1.jpg" class="img-circle" alt="Trolltunga Norway" width="100" height="50">
+                                                    <div class="drpdn-content">
+                                                      <!-- <img src="https://bootdey.com/img/Content/user_1.jpg" alt="Trolltunga Norway" width="300" height="200"> -->
+                                                      <!-- <div class="desc">
+                                                          Beautiful Trolltunga, Norway
+                                                      </div> -->
+                                                    </div>
+                                            </div>
+                                    </div>
+                                    <div class="comment-body">
+                                        <h6 class="author fw-semi-bold">Carlos Nertg <small>6 mins ago</small></h6>
+                                        <p>Hey,this is very cool. Continue with your work</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="thumb-xs avatar pull-left mr-sm">
+                                        <img class="img-circle" src="https://bootdey.com/img/Content/user_2.jpg" alt="...">
+                                    </span>
+                                    <div class="comment-body">
+                                        <input class="form-control input-sm" type="text" placeholder="Write your comment...">
+                                    </div>
+                                </li>
+                            </ul>
+                        </footer>
+                </section>   
+        </div>
+        {{!-- {{/each}} --}}
+	</div>
+</div>
+
+<script src="bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+<script src="../../js/main.js"></script> <!-- Resource jQuery -->
+<script type="text/javascript">
+            
+    $(function(){
+        var postActions   = $( '#list_PostActions' );
+        var currentAction = $( '#list_PostActions li.active' );
+        if ( currentAction.length === 0 ) {
+            postActions.find( 'li:first' ).addClass( 'active' );
+        }
+        postActions.find( 'li' ).on( 'click', function( e ) {
+            e.preventDefault();
+            var self = $( this );
+            if ( self === currentAction ) {return;}
+            // else
+            currentAction.removeClass( 'active' );
+            self.addClass( 'active' );
+            currentAction = self;
+        });
+    });
+
+</script>
+	
+</script>
+</body>

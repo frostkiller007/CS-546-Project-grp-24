@@ -127,20 +127,19 @@
         <!-- First Post type form -->
 		<br>
         <!-- Second Post type form (post with pic)-->
-         {{!-- {{#each allPost}} --}}
          {{!-- TODO --}}
-         <div class="col-sm-8">
+         {{!-- <div class="col-sm-8">
                 {{#each allPost}}
                     <div class="media post-part">
                         <div class="media-left ">
                             <div class="photoContainer">
-                                <a href='http://localhost:3000/posts/postInfo/{{this._id}}'>
+                                {{!-- <a href='http://localhost:3000/posts/postInfo/{{this._id}}'>
                                     <img class="media-object user-Pic" src={{images.image}}>
-                                </a>
-                            </div>
+                                </a> --}}
+                            {{!-- </div>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading postTopic"><a class="jumpToPost" id={{this._id}} href="#">{{this.topic}}</a></h4>
+                            <h4 class="media-heading postTopic"><a class="jumpToPost" id={{this._id}} href="#">{{this.description}}</a></h4>
                             <p class="AllContent">{{this.content}}</p>
                         </div>
                     </div>
@@ -149,8 +148,9 @@
                             <h2 class="noPost">Oops! No post.</h2>
                         </div>
                 {{/each}}
-            </div>
+            </div> --}} 
             {{!-- todo --}}
+            {{#each allPost}}
         <div class="col-md-offset-3 col-md-6 col-xs-12">
                 <section class="widget">
                   
@@ -193,22 +193,23 @@
                             <span class="thumb pull-left mr">
                                 <img class="img-circle" src="https://bootdey.com/img/Content/user_2.jpg" alt="...">
                             </span>
-                            <h5 class="mb-xs mt-xs"><span class="fw-semi-bold">Maryna</span> Nilson</h5>
-                            <p class="fs-mini text-muted"><time>25 mins</time>
+                            <h5 class="mb-xs mt-xs"><span class="fw-semi-bold">{{this.username}}</span> </h5>
+                            {{!-- <p class="fs-mini text-muted"><time>25 mins</time> --}}
                                  <!-- &nbsp; <i class="fa fa-map-marker"></i> &nbsp; near Amsterdam</p> -->
                         </div>
-                        <p class="text-light fs-mini m">Lots of cool stuff is happening around you. Just calm down for a sec and listen. Colors, sounds,
-                            thoughts, ideas. </p>
+                        <p class="text-light fs-mini m" href="#">{{this.description}}</p>
                     </div>
                     <footer class="bg-body-light">
                             <ul class="post-links"> 
                                 <!-- like and comment footer -->
-                                <li><a href="#">10
+                                <li>
+                                    <a href="#"> {{this.likes}}
                                     <i class="far fa-thumbs-up"></i>                                     
-                                    </a></li>
-                                <li><a href="#">32
+                                    </a>
+                                    </li>
+                                {{!-- <li><a href="#">32
                                     <i class="far fa-comment-dots"></i>
-                                 </a></li>
+                                 </a></li> --}}
                                  <li style="float:right"><a href="#">
                                 Report
                                 </a></li>
@@ -245,7 +246,7 @@
                         </footer>
                 </section>   
         </div>
-        {{!-- {{/each}} --}}
+        {{/each}}
 	</div>
 </div>
 
@@ -271,6 +272,8 @@
             currentAction = self;
         });
     });
+
+
 
 </script>
 	

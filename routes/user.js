@@ -74,7 +74,11 @@ router
       );
       if (loginUser) {
         req.session.AuthCookie = usersData.email;
-        req.session.user = { email: usersData.email, username: usernameDB };
+        req.session.user = {
+          email: usersData.email,
+          username: usernameDB,
+          id: loginUser.id,
+        };
         req.session.login = loginUser.authenticatedUser;
         res.redirect("/mainPage");
       } else {
@@ -100,80 +104,100 @@ router
   .route("/profile")
   .get(async (req, res) => {
     const usersData = req.session.user;
-    console.log(req.session);
+    // console.log(req.session);
     if (req.session.user) {
       try {
         const user = await userData.getUserByUsername(usersData.username);
         //const userPosts = await postData.getPostById(userID);
         //Get all post by user
-        return res.render('profilePage/test')
+        console.log(user);
+        return res.render("profilePage/profile", {
+          username: user.username,
+          email: user.email,
+          age: user.age,
+          city: user.city,
+          state: user.state,
+        });
       } catch (e) {
         //TODO
         res.status(404).json({ error: "Invalid user" });
-      }}
-    else{
+      }
+    } else {
       return res.redirect("/mainPage");
     }
   })
   .post(async (req, res) => {
     let usersData = req.body;
     const username = req.session.user.username;
-    
+
     let userExists;
-    try{
+    try {
       userExists = await userData.getUserByUsername(username);
-    }catch(e){
+    } catch (e) {
       //TODO
-      res.status(404).json({error: 'User not found'});
+      res.status(404).json({ error: "User not found" });
     }
-    try{
-      if(usersData.username){
-        if(usersData.username == userExists.username) throw "Error: Updated username must be differnt from previous";
-        const updatedInfo = await userData.updateUsername(usersData.username, userExists._id);
-        if(updatedInfo){
+    try {
+      if (usersData.username) {
+        if (usersData.username == userExists.username)
+          throw "Error: Updated username must be differnt from previous";
+        const updatedInfo = await userData.updateUsername(
+          usersData.username,
+          userExists._id
+        );
+        if (updatedInfo) {
           return res.render("profilePage/profile");
         }
-      }else if(usersData.state){
-        if(usersData.state == userExists.state) throw "Error: Updated state must be differnt from previous";
-        const updatedInfo = await userData.updateState(usersData.state, userExists._id);
-        if(updatedInfo){
+      } else if (usersData.state) {
+        if (usersData.state == userExists.state)
+          throw "Error: Updated state must be differnt from previous";
+        const updatedInfo = await userData.updateState(
+          usersData.state,
+          userExists._id
+        );
+        if (updatedInfo) {
           return res.render("profilePage/profile");
         }
-      }else if(usersData.city){
-        if(usersData.city == userExists.city) throw "Error: Updated city must be differnt from previous";
-        const updatedInfo = await userData.updateCity(usersData.city, userExists._id);
-        if(updatedInfo){
+      } else if (usersData.city) {
+        if (usersData.city == userExists.city)
+          throw "Error: Updated city must be differnt from previous";
+        const updatedInfo = await userData.updateCity(
+          usersData.city,
+          userExists._id
+        );
+        if (updatedInfo) {
           return res.render("profilePage/profile");
         }
-      }else if(usersData.password){
+      } else if (usersData.password) {
         //if(usersData.password !== usersData.confirmPassword) throw "Error: Both passwords should match";
         hashedPassword = await bcrypt.hash(usersData.password, saltRounds);
-        
-        const updatedInfo = await userData.updatePassword(hashedPassword, userExists._id);
-        if(updatedInfo){
+
+        const updatedInfo = await userData.updatePassword(
+          hashedPassword,
+          userExists._id
+        );
+        if (updatedInfo) {
           return res.render("profilePage/profile");
         }
       }
-    }catch(e){
-    }
+    } catch (e) {}
   }),
-
+  router.route("/profile/update").patch(async (req, res) => {
+    // hajd;
+    // if
+  });
 router
   .route("/viewProfile")
   .get(async (req, res) => {
     if (!req.session.user) {
       return res.redirect("/mainPage");
-    }
-    else{
-
+    } else {
     }
   })
   .post(async (req, res) => {
     if (!req.session.user) {
       return res.redirect("/mainPage");
+    } else {
     }
-    else{
-      
-    }
-  })
+  });
 module.exports = router;

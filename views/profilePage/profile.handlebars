@@ -90,13 +90,13 @@
              <div class="row">
         <div class="col-sm-4">
             <br/>
-            <form action="/users/account" method="post">
+            <form action="/user/profile" method="post">
                 <div class="form-group">
-                    <label class="noPost" for="username">Your Username:</label>
-                    <p class="usercenterName"> {{username}}</p>
-                    <input type="email" class="form-control" id="username" name="username" placeholder="Your new Username">
-                    <br>
-                    <input type="submit" id="upUButton" class="form-control button btn btn-danger" value="Update Username">
+                    <label class="noPost" for="email">Your email:</label>
+                    <p class="usercenterName">{{email}}</p>
+                    <input type="email" autocomplete="email" class="form-control" id="email" name="email" placeholder="Your new email">
+                    <br> 
+                    <input type="submit" id="upUButton" class="form-control button btn btn-danger" value="Update email">
       <div class="container">
                 <br>
                 </div>
@@ -117,13 +117,14 @@
     <div class="row">
         <div class="col-sm-4">
             <br/>
-            <form action="/users/account" method="post">
+            <form action="/user/profile/update" method="post">
                 <div class="form-group">
-                    <label class="noPost" for="nickname">Your Nickname:</label>
-                    <p class="usercenterName"> {{nickname}}</p>
-                    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Your new Nickname">
+                    <label class="noPost" for="username">Your username:</label>
+                    <p class="usercenterName"> 
+                      {{username}}</p>
+                    <input type="text" autocomplete="off" class="form-control" id="username" name="username" placeholder="Your new username">
                     <br>
-                    <input type="submit" id="upNButton" class="form-control button btn btn-danger" value="Update Nickname">
+                    <input type="submit" id="upNButton" class="form-control button btn btn-danger" value="Update username">
                     <br>
                 </div>
             </form>
@@ -143,7 +144,7 @@
     <div class="row">
         <div class="col-sm-4">
             <br/>
-            <form action="/users/account" method="post">
+            <form action="/user/profile" method="post">
                 <div class="form-group">
                     <label class="noPost" for="password">New Password:</label><br>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Your new Password">
@@ -178,6 +179,6 @@
     </div>
 </section>
      
-<script src="../js/profile_javascript.js"></script>
+<script src="../../public/js/profile_javascript.js"></script>
 
 	</body>

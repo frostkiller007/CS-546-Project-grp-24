@@ -7,7 +7,6 @@ const { checkEmail } = require("../helper");
 const helper = require("../helper");
 let saltRounds = 10;
 
-
 const createUser = async (
   userName,
   email,
@@ -59,7 +58,7 @@ const getUserByUsername = async (username) => {
   username = valid.checkUserName(username, "username");
 
   const usersCollection = await users();
-  const user = await usersCollection.findOne({username: username});
+  const user = await usersCollection.findOne({ username: username });
   if (user === null) throw "There is no user with the provided username";
 
   return user;
@@ -85,7 +84,7 @@ const verifyUser = async (email, password) => {
     if (userExists) {
       compareToDb = await bcrypt.compare(password, userExists.password);
       if (compareToDb) {
-        ret = { authenticatedUser: true };
+        ret = { id: userExists._id.toString(), authenticatedUser: true };
       } else {
         throw "Error: Either the username or password is invalid";
       }
@@ -100,54 +99,73 @@ const verifyUser = async (email, password) => {
 
 const updateUsername = async (username, userID) => {
   username = valid.checkUserName(username);
-  if(!userID) throw "Error: You must provide userID";
-  if(!ObjectId.isValid(userID)) throw 'The provided userID not a valid objectID';
+  if (!userID) throw "Error: You must provide userID";
+  if (!ObjectId.isValid(userID))
+    throw "The provided userID not a valid objectID";
 
   const userCollection = await users();
-  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userID)},{$set: {username: username}});
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $set: { username: username } }
+  );
 
-  if(updateInfo.modifiedCount === 0) throw 'Error: username can not be updated';
-  
+  if (updateInfo.modifiedCount === 0)
+    throw "Error: username can not be updated";
+
   return username;
 };
 
 const updateState = async (state, userID) => {
   state = valid.checkString(state);
-  if(!userID) throw "Error: You must provide userID";
-  if(!ObjectId.isValid(userID)) throw 'The provided userID not a valid objectID';
+  if (!userID) throw "Error: You must provide userID";
+  if (!ObjectId.isValid(userID))
+    throw "The provided userID not a valid objectID";
 
   const userCollection = await users();
-  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userID)},{$set: {state: state}});
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $set: { state: state } }
+  );
 
-  if(updateInfo.modifiedCount === 0) throw 'Error: state can not be updated';
-  
+  if (updateInfo.modifiedCount === 0) throw "Error: state can not be updated";
+
   return state;
 };
 
 const updateCity = async (city, userID) => {
   city = valid.checkString(city);
-  if(!userID) throw "Error: You must provide userID";
-  if(!ObjectId.isValid(userID)) throw 'The provided userID not a valid objectID';
+  if (!userID) throw "Error: You must provide userID";
+  if (!ObjectId.isValid(userID))
+    throw "The provided userID not a valid objectID";
 
   const userCollection = await users();
-  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userID)},{$set: {city: city}});
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $set: { city: city } }
+  );
 
-  if(updateInfo.modifiedCount === 0) throw 'Error: city can not be updated';
-  
+  if (updateInfo.modifiedCount === 0) throw "Error: city can not be updated";
+
   return state;
 };
 
 const updatePassword = async (password, userID) => {
-  if(!password) throw 'Error: Must provide password';
-  if(typeof password !== 'string') throw 'Error: password must be of type string';
-  if(!userID) throw "Error: You must provide userID";
-  if(!ObjectId.isValid(userID)) throw 'Error: The provided userID not a valid objectID';
+  if (!password) throw "Error: Must provide password";
+  if (typeof password !== "string")
+    throw "Error: password must be of type string";
+  if (!userID) throw "Error: You must provide userID";
+  if (!ObjectId.isValid(userID))
+    throw "Error: The provided userID not a valid objectID";
   hashedPassword = await bcrypt.hash(password, saltRounds);
   const userCollection = await users();
-  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userID)},{$set: {password: password}});
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $set: { password: password } }
+  );
 
-  if(updateInfo.modifiedCount === 0) throw 'Error: password can not be updated';
-  
+  if (updateInfo.modifiedCount === 0)
+    throw "Error: password can not be updated";
+
   return state;
 };
 
@@ -156,4 +174,8 @@ module.exports = {
   getUserByUsername,
   getUserByEmail,
   verifyUser,
+  updateUsername,
+  updatePassword,
+  updateCity,
+  updateState,
 };

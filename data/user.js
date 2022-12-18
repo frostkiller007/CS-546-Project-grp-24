@@ -110,7 +110,6 @@ const updateUsername = async (username, userID) => {
   return username;
 };
 
-
 module.exports = {
   createUser,
   getUserById,

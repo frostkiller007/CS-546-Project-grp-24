@@ -100,6 +100,7 @@ router
   .route("/profile")
   .get(async (req, res) => {
     const usersData = req.session.user;
+    console.log(req.session);
     if (req.session.user) {
       try {
         const user = await userData.getUserByUsername(usersData.username);

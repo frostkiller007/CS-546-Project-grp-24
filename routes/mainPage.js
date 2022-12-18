@@ -67,7 +67,50 @@ router.route("/search").get(async (req, res) => {
   }
 });
 router.route("/createPost").get(async (req, res) => {
+  if (!req.session.user){
+    return res.render("mainPage/home", { message: 'Must be login to create post'});
+  }
+  const form = new formidable.IncomingForm();
+    form.uploadDir = path.join(__dirname, '../', 'public', 'img');
+    form.keepExtensions = true;
+    form.parse(req, async (err, fields, files) => {
+        try {//topic, userid, caption, images, tagsArray
+            if (!fields)
+                throw "need data to create post";
+            if (!fields.topic)
+                throw "need topic to create post "
+            if (!fields.caption)
+                throw "need caption to create post"
+            if (!fields.tagsArray)
+                throw "need a tagsArray String to create post";
+            let tagsArray = JSON.parse(fields.tagsArray);
+            if (!Array.isArray(tagsArray))
+                throw "need a tagsArray to create post";
+            let photoArr = [];
+
+            if (files.photo0)
+                photoArr.push("http://localhost:3000/public/img/" + files.photo0.path.split('img\\')[1]);
+            if (files.photo1)
+                photoArr.push("http://localhost:3000/public/img/" + files.photo1.path.split('img\\')[1]);
+            if (files.photo2)
+                photoArr.push("http://localhost:3000/public/img/" + files.photo2.path.split('img\\')[1]);
+            
+            let newPost = await postData.createPost(
+                fields.topic,
+                req.session.username,
+                fields.caption,
+                photoArr,
+                tagsArray
+            )
+            res.send(newPost);
+        } catch (error) {
+            res.status(404).send(error);
+        }
+      })
+     
+  
   try {
+    
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });

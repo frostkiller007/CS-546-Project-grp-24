@@ -21,22 +21,31 @@ router
   .route("/register")
   .get(async (req, res) => {
     if (!req.session.user) {
-      //TODO
-      return res.render("mainPage/register");
+      let userLogin = req.session.user;
+      return res.render("mainPage/register", { title: "Sign Up Page"});
     }
     res.redirect("/mainPage");
   })
   .post(async (req, res) => {
     // const usersData = req.body;
-    //TODO: validation
+    // validation
     try {
       username = xss(req.body.username);
       email = xss(req.body.email);
       age = xss(req.body.age);
       city = xss(req.body.city);
-      state = xss(req.body.state);
-      postID = xss(req.body.postID);
+      //state = xss(req.body.state);
+      //postID = xss(req.body.postID);
       password = xss(req.body.password);
+      password2 = xss(req.body.password2);
+
+      username = valid.checkUserName(username);
+      email = valid.checkEmail(email);
+      age = valid.checkAge(age);
+      city = valid.checkString(city);
+      password = valid.checkPassword(password);
+      if(password !== password2) throw 'Both entered password must be same';
+      let usernameDB = await userData.getUserByEmail(email);
       const newUser = await userData.createUser(
         username,
         email,
@@ -63,9 +72,10 @@ router
   .route("/login")
   .get(async (req, res) => {
     if (req.session.user) {
+      let userLogin = true;
       return res.redirect("/mainPage");
     }
-
+    
     res.render("mainPage/login");
   })
   .post(async (req, res) => {

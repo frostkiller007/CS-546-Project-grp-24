@@ -21,7 +21,7 @@ const createUser = async (
   email = valid.checkEmail(email);
   age = valid.checkAge(age);
   city = valid.checkCity(city);
-  if(password !== password2) throw 'Error: You must enter same password';
+  if(password !== password2) throw ' You must enter same password';
   password = valid.checkPassword(password);
 
   const usersCollection = await users();
@@ -93,26 +93,23 @@ const verifyUser = async (email, password) => {
   let ret;
   const usersCollection = await users();
   const userExists = await usersCollection.findOne({ email: email });
-  try {
+
     if (userExists) {
       compareToDb = await bcrypt.compare(password, userExists.password);
       if (compareToDb) {
         ret = { id: userExists._id.toString(), authenticatedUser: true };
       } else {
-        throw "Error: Either the username or password is invalid";
+        throw "Either the username or password is invalid";
       }
     } else {
-      throw "Error: Either the username or password is invalid";
+      throw " Either the username or password is invalid";
     }
-  } catch (e) {
-    return false;
-  }
   return ret;
 };
 
 const updateUsername = async (username, userID) => {
   username = valid.checkUserName(username);
-  if (!userID) throw "Error: You must provide userID";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
     throw "The provided userID not a valid objectID";
 
@@ -123,14 +120,14 @@ const updateUsername = async (username, userID) => {
   );
 
   if (updateInfo.modifiedCount === 0)
-    throw "Error: username can not be updated";
+    throw " username can not be updated";
 
   return username;
 };
 
 const updateState = async (state, userID) => {
   state = valid.checkString(state);
-  if (!userID) throw "Error: You must provide userID";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
     throw "The provided userID not a valid objectID";
 
@@ -140,14 +137,14 @@ const updateState = async (state, userID) => {
     { $set: { state: state } }
   );
 
-  if (updateInfo.modifiedCount === 0) throw "Error: state can not be updated";
+  if (updateInfo.modifiedCount === 0) throw " state can not be updated";
 
   return state;
 };
 
 const updateCity = async (city, userID) => {
   city = valid.checkString(city);
-  if (!userID) throw "Error: You must provide userID";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
     throw "The provided userID not a valid objectID";
 
@@ -157,18 +154,18 @@ const updateCity = async (city, userID) => {
     { $set: { city: city } }
   );
 
-  if (updateInfo.modifiedCount === 0) throw "Error: city can not be updated";
+  if (updateInfo.modifiedCount === 0) throw " city can not be updated";
 
   return state;
 };
 
 const updatePassword = async (password, userID) => {
-  if (!password) throw "Error: Must provide password";
+  if (!password) throw " Must provide password";
   if (typeof password !== "string")
-    throw "Error: password must be of type string";
-  if (!userID) throw "Error: You must provide userID";
+    throw " password must be of type string";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
-    throw "Error: The provided userID not a valid objectID";
+    throw " The provided userID not a valid objectID";
   hashedPassword = await bcrypt.hash(password, saltRounds);
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne(
@@ -177,7 +174,7 @@ const updatePassword = async (password, userID) => {
   );
 
   if (updateInfo.modifiedCount === 0)
-    throw "Error: password can not be updated";
+    throw " password can not be updated";
 
   return state;
 };
@@ -186,7 +183,7 @@ async function addPostUser(userId, postId) {
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne({ _id: ObjectId(userId) }, { $addToSet: {post: postId} });
   if (updateInfo.modifiedCount === 0)
-  throw "Error: Can not add post to user";
+  throw " Can not add post to user";
 return await getUserByUserId(userId);
 };
 

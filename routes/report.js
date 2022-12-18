@@ -17,7 +17,7 @@ router.route("/").get(async (req, res) => {
     else res.status(400).json({ error: e });
   }
 });
-router.post("/form" ,async(req, res) => {
+router.route("/form").post(async(req, res) => {
   
     try
     {

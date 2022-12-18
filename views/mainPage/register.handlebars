@@ -6,13 +6,36 @@
     
             <nav class="cd-main-nav-wrapper">
                 <ul class="cd-main-nav">
+                  <li>  <form action="/action_page.php">
+                    <input style="padding: 6px;
+  margin-top: -2px;
+  font-size: 17px;
+  border: none;" type="text" placeholder="Search.." name="search">
+                    <button style="float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  background:transparent;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;" type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </li>
+                    {{!-- {{#if userLogin}} --}}
                     <li><a href="/mainPage">Home</a></li>
                     <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/profile.html">Chats</a></li> 
+                    <li><a href="/user/register">Logout</a></li>
+                 {{!-- {{else}}   --}}
+             
+                    {{!-- {{#if userLogin}} --}}
+                    <li><a href="/mainPage">Home</a></li>
                     <li><a href="/user/login">Login</a></li>
                     <li><a href="/user/register">Signup</a></li>
-                    <li><a href="/profile.html">Chats</a></li>
+                     {{!-- {{/if}} --}}
                 </ul> <!-- .cd-main-nav -->
             </nav> <!-- .cd-main-nav-wrapper -->
+          
             
             <a href="#0" class="cd-nav-trigger">Menu<span></span></a>
     </header>

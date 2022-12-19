@@ -14,14 +14,13 @@ const createUser = async (
   city,
   //state,
   // postID,
-  password,
-  password2
+  password
 ) => {
   userName = valid.checkUserName(userName);
   email = valid.checkEmail(email);
   age = valid.checkAge(age);
   city = valid.checkCity(city);
-  if (password !== password2) throw " You must enter same password";
+
   password = valid.checkPassword(password);
 
   const usersCollection = await users();
@@ -123,6 +122,22 @@ const updateUsername = async (username, userID) => {
 
   return username;
 };
+const updateEmail = async (email, userID) => {
+  email = valid.checkEmail(email);
+  if (!userID) throw " You must provide userID";
+  if (!ObjectId.isValid(userID))
+    throw "The provided userID not a valid objectID";
+
+  const userCollection = await users();
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $set: { email: email } }
+  );
+
+  if (updateInfo.modifiedCount === 0) throw " email can not be updated";
+
+  return email;
+};
 
 const updateState = async (state, userID) => {
   state = valid.checkString(state);
@@ -172,8 +187,8 @@ const updatePassword = async (password, userID) => {
   );
 
   if (updateInfo.modifiedCount === 0) throw " password can not be updated";
-
-  return state;
+  let ret =updateInfo.modifiedCount;
+  return password;
 };
 
 async function addPostUser(userId, postId) {
@@ -220,4 +235,5 @@ module.exports = {
   getUserByUserId,
   addPostUser,
   updatePicture,
+  updateEmail
 };

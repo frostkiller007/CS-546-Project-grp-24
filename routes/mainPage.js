@@ -36,6 +36,7 @@ var upload = multer({
 
 router.route("/").get(async (req, res) => {
   try {
+    let userRegister = null;
     if (req.session.user) {
       userRegister = await userData.getUserByUserId(req.session.user.id);
     }
@@ -46,17 +47,8 @@ router.route("/").get(async (req, res) => {
       let userInfo = await userData.getUserByUserId(allPost[i].userId);
       allPost[i].username = userInfo.username;
     }
-    // allPost.forEach(async (element) => {
-    //   let userInfo = await userData.getUserByUserId(element.userId);
-    //   allPost.userName = userInfo.userName;
-    // });
-    // allPost.sort((a, b) => {
-    //   b.date - a.date;
-    // });
-    // res.send({ allPost, userRegister });
-    // res.status(200).json(allPost);
 
-    res.render("mainPage/home", { title: "Handout home", allPost });
+    res.render("mainPage/home", { title: "Handout home", allPost, userRegister: true });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });
@@ -73,7 +65,7 @@ router.route("/tags").get(async (req, res) => {
     let tagPost = await postData.getPostByTag(req.query.searchTag);
     res.status(200).json(tagPost);
     //   res.render("mainPage/home.handlebars", { tagPost, userRegister });
-    res.render("mainPage/home.handlebars", { title: `First Page` });
+    res.render("mainPage/home.handlebars", { title: 'First Page', userRegister });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });
@@ -91,7 +83,7 @@ router.route("/search").get(async (req, res) => {
       req.query.searchString
     );
     res.status(200).json(searchStringPost);
-    res.render("mainPage/home.handlebars", { title: `First Page` });
+    res.render("mainPage/home", { title: 'First Page',userRegister });
 
     //   res.render("mainPage/home.handlebars", { allPost, searchStringPost });
   } catch (e) {
@@ -105,8 +97,9 @@ router.post(
   async (req, res) => {
     try {
       if (!req.session.user) {
+        let userRegister =null;
         return res.render("mainPage/home", {
-          message: "Must be login to create post",
+          message: "Must be login to create post", userRegister
         });
       }
       if (result === "Error") {
@@ -134,16 +127,7 @@ router.post(
     // let username = req.session.user.username;
     // var finalImg = {
     //   image: Buffer.from(encode_image, "base64"),
-    // };
-
-    const addPost = await postData.AddPost(
-      //"topic",
-      username,
-      description,
-      finalImg,
-      tagsArray
-    );
-    return res.render("mainPage/home");
+    
 
     // https://www.geeksforgeeks.org/upload-file-using-multer/
   }

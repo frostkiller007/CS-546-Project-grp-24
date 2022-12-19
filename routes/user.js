@@ -39,10 +39,10 @@ router
       password = xss(req.body.password);
       password2 = xss(req.body.password2);
 
-      username = valid.checkUserName(username).toLowerCase();
-      email = valid.checkEmail(email).toLowerCase();
+      username = valid.checkUserName(username);
+      email = valid.checkEmail(email);
       age = valid.checkAge(age);
-      city = valid.checkString(city).toLowerCase();
+      city = valid.checkString(city);
       password = valid.checkPassword(password);
       if (password !== password2) throw "Both entered password must be same";
       //let usernameDB = await userData.getUserByEmail(email);

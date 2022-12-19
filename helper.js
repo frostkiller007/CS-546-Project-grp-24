@@ -15,7 +15,7 @@ module.exports = {
     if (!regex.test(userName))
       throw "userName must be only alphanumeric characters and no spaces";
 
-    return userName;
+    return userName.toLowerCase();
   },
 
   checkEmail(email) {
@@ -26,11 +26,12 @@ module.exports = {
       throw "email cannot be an empty string or just spaces";
     //(name)@(domain).(extension)(.extension)
     //let regex = /^([A-Za-z0-9_-\.]+)@([a-zA-Z0-9]+).([a-z]{2,10})(.[a-z]{2,10})?$/;
-    const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!regex.test(email)) throw "email not valid";
 
-    return email;
+    return email.toLowerCase();
   },
 
   checkAge(age) {

@@ -150,7 +150,17 @@ router
         });
       } catch (e) {
         //TODO
-        res.status(404).json({ error: "Invalid user" });
+        res.render("profilePage/profile", {
+          username: user.username,
+          email: user.email,
+          age: user.age,
+          city: user.city,
+          state: user.state,
+          userLogin: req.session.login,
+          isAdmin: req.session.user.isAdmin,
+          profilePicture: req.session.user.profilePicture,
+          error: e,
+        });
       }
     } else {
       return res.redirect("/mainPage");

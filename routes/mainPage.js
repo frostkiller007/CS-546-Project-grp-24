@@ -48,7 +48,11 @@ router.route("/").get(async (req, res) => {
       allPost[i].username = userInfo.username;
     }
 
-    res.render("mainPage/home", { title: "Handout home", allPost, userRegister: true });
+    res.render("mainPage/home", {
+      title: "Handout home",
+      allPost,
+      userRegister: true,
+    });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });
@@ -65,7 +69,10 @@ router.route("/tags").get(async (req, res) => {
     let tagPost = await postData.getPostByTag(req.query.searchTag);
     res.status(200).json(tagPost);
     //   res.render("mainPage/home.handlebars", { tagPost, userRegister });
-    res.render("mainPage/home.handlebars", { title: 'First Page', userRegister });
+    res.render("mainPage/home.handlebars", {
+      title: "First Page",
+      userRegister,
+    });
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });
@@ -83,7 +90,7 @@ router.route("/search").get(async (req, res) => {
       req.query.searchString
     );
     res.status(200).json(searchStringPost);
-    res.render("mainPage/home", { title: 'First Page',userRegister });
+    res.render("mainPage/home", { title: "First Page", userRegister });
 
     //   res.render("mainPage/home.handlebars", { allPost, searchStringPost });
   } catch (e) {
@@ -91,49 +98,58 @@ router.route("/search").get(async (req, res) => {
     else res.status(400).json({ error: e });
   }
 });
-router.post(
-  "/createPost",
-  (result = upload.single("picture")),
-  async (req, res) => {
-    try {
-      if (!req.session.user) {
-        let userRegister =null;
-        return res.render("mainPage/home", {
-          message: "Must be login to create post", userRegister
-        });
-      }
-      if (result === "Error") {
-        throw "Only .png, .jpg and .jpeg format allowed!";
-      }
-      profilePicture = req.file.originalname;
-      const updateProfilePicture = await updatePicture.updatePicture(
-        req.session.user._id,
-        profilePicture
-
-
-        
-      );
-      req.session.user.profilePicture = profilePicture;
-      return res.redirect("/mainPage");
-    } catch (error) {
-      console.log(error);
-      res.status(401).redirect("/mainPage");
-      return;
+router.route("/createPost").post(async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.render("mainPage/home", {
+        message: "Must be login to create post",
+      });
     }
-    // const description = req.body.description;
-    // const tagsArray = req.body.tag;
-    // console.log(path.join(__dirname, "../", "public/img", req.body.picture));
-    // var img = fs.readFileSync(
-    //   path.join(__dirname, "../", "public/img", req.body.picture)
+    // if (result === "Error") {
+    //   throw "Only .png, .jpg and .jpeg format allowed!";
+    // }
+    // profilePicture = req.file.originalname;
+    // const updateProfilePicture = await updatePicture.updatePicture(
+    //   req.session.user._id,
+    //   profilePicture
     // );
-    // var encode_image = img.toString("base64");
-    // let username = req.session.user.username;
-    // var finalImg = {
-    //   image: Buffer.from(encode_image, "base64"),
-    
-
-    // https://www.geeksforgeeks.org/upload-file-using-multer/
+    var img = fs.readFileSync(
+      path.join(__dirname, "../", "public/img", req.body.picture)
+    );
+    var encode_image = img.toString("base64");
+    const tagsArray = req.body.tag;
+    let username = req.session.user.username;
+    const description = req.body.description;
+    var finalImg = {
+      image: Buffer.from(encode_image, "base64"),
+    };
+    const addPost = await postData.AddPost(
+      //"topic",
+      username,
+      description,
+      finalImg,
+      tagsArray
+    );
+    if (!addPost) {
+      throw `Could not post`;
+    }
+    return res.redirect("/mainPage");
+  } catch (error) {
+    console.log(error);
+    res.status(401).redirect("/mainPage");
+    return;
   }
-);
+  // const description = req.body.description;
+  // const tagsArray = req.body.tag;
+  // console.log(path.join(__dirname, "../", "public/img", req.body.picture));
+  // var img = fs.readFileSync(
+  //   path.join(__dirname, "../", "public/img", req.body.picture)
+  // );
+  // let username = req.session.user.username;
+  // var finalImg = {
+  //   image: Buffer.from(encode_image, "base64"),
+  // };
 
+  // https://www.geeksforgeeks.org/upload-file-using-multer/
+});
 module.exports = router;

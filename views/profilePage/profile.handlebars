@@ -116,7 +116,18 @@
     </div>
   </div>
 </div>
+
 <!-- partial -->
+ <div class="rightMsg">
+                {{#if error}}
+                <p>{{error}}</p >
+                {{/if}}
+            </div>
+            <div class="wrongMsg">
+                {{#if message}}
+                    <p>{{message}}</p>
+                {{/if}}
+            </div>
              <div class="row">
         <div class="col-sm-4">
             <br/>
@@ -200,7 +211,7 @@
 
     <div class="wrongMsg">
         {{#unless status}}
-            <p>{{message4}}</p>
+            <p>{{message}}</p>
         {{/unless}}
     </div>
 
@@ -208,8 +219,9 @@
 		</div>
     </div>
 </section>
+  <script src = "../../public/js/client.js"></script><!-- Client side js -->
      
-<script src="../../public/js/profile_javascript.js"></script>
+<script src="../../public/js/client.js"></script>
 <script>
   function uploadpic(){
 console.log("entered");
@@ -224,9 +236,6 @@ file.addEventListener("change", function() {
         document.getElementById("profile_pic").src=URL.createObjectURL(file.files[i]);
         
     }  
-
-    
-
 }, false);
 }
 </script>

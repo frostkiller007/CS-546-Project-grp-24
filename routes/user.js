@@ -36,25 +36,21 @@ router
       email = xss(req.body.email);
       age = xss(req.body.age);
       city = xss(req.body.city);
-      //state = xss(req.body.state);
-      //postID = xss(req.body.postID);
       password = xss(req.body.password);
       password2 = xss(req.body.password2);
 
-      username = valid.checkUserName(username);
-      email = valid.checkEmail(email);
+      username = valid.checkUserName(username).toLowerCase();
+      email = valid.checkEmail(email).toLowerCase();
       age = valid.checkAge(age);
-      city = valid.checkString(city);
+      city = valid.checkString(city).toLowerCase();
       password = valid.checkPassword(password);
       if (password !== password2) throw "Both entered password must be same";
-      let usernameDB = await userData.getUserByEmail(email);
+      //let usernameDB = await userData.getUserByEmail(email);
       const newUser = await userData.createUser(
         username,
         email,
         age,
         city,
-        state,
-        postID,
         password
       );
       // if(newUser){
@@ -85,13 +81,10 @@ router
       let usersData = req.body;
       let email = xss(req.body.email);
       let password = xss(req.body.password);
-      email = valid.checkEmail(usersData.email);
+      email = valid.checkEmail(usersData.email).toLowerCase();
       password = valid.checkPassword(password);
       let usernameDB = await userData.getUserByEmail(email);
-      const loginUser = await userData.verifyUser(
-        usersData.email,
-        usersData.password
-      );
+      const loginUser = await userData.verifyUser(email, usersData.password);
       let admin =
         usersData.email.toLowerCase() ===
         "Admin214@gmail.com".toLocaleLowerCase();
@@ -111,11 +104,13 @@ router
           let userInfo = await userData.getUserByUserId(allPost[i].userId);
           allPost[i].username = userInfo.username;
         }
+        let userRegister = req.session.login;
         return res.render("mainPage/home", {
           userLogin: req.session.login,
           isAdmin: admin,
           title: "Handouts Logged in User",
           allPost,
+          userRegister,
         });
       }
     } catch (e) {
@@ -163,48 +158,71 @@ router
   })
   .post(async (req, res) => {
     let usersData = req.body;
-    const username = req.session.user.username;
+    const userId = req.session.user.id;
 
     let userExists;
     try {
-      userExists = await userData.getUserByUsername(username);
+      // userExists = await userData.getUserByUsername(username);
+      userExists = await userData.getUserByUserId(userId);
     } catch (e) {
       //TODO
       res.status(404).json({ error: "User not found" });
     }
     try {
       if (usersData.username) {
-        if (usersData.username == userExists.username)
+        if (usersData.userId == userExists._id)
           throw "Error: Updated username must be differnt from previous";
+        usersData.username = usersData.username.toLowerCase();
         const updatedInfo = await userData.updateUsername(
           usersData.username,
           userExists._id
         );
         if (updatedInfo) {
-          return res.render("profilePage/profile");
+          return res.render("profilePage/profile", {
+            message: "Username Updated",
+          });
         }
       } else if (usersData.state) {
         if (usersData.state == userExists.state)
           throw "Error: Updated state must be differnt from previous";
+
+        usersData.state = usersData.state.toLowerCase();
+
         const updatedInfo = await userData.updateState(
           usersData.state,
           userExists._id
         );
         if (updatedInfo) {
-          return res.render("profilePage/profile");
+          return res.render("profilePage/profile", {
+            message: "State Updated",
+          });
         }
-      } else if (usersData.city) {
-        if (usersData.city == userExists.city)
-          throw "Error: Updated city must be differnt from previous";
-        const updatedInfo = await userData.updateCity(
-          usersData.city,
+      } else if (usersData.email) {
+        if (usersData.email == userExists.email)
+          throw "Error: Updated email must be differnt from previous";
+
+        usersData.email = usersData.email.toLowerCase();
+
+        const updatedInfo = await userData.updateEmail(
+          usersData.email,
           userExists._id
         );
         if (updatedInfo) {
-          return res.render("profilePage/profile");
+          const user = await userData.getUserByUsername(usersData.username);
+          return res.render("profilePage/profile", {
+            username: user.username,
+            email: user.email,
+            age: user.age,
+            city: user.city,
+            state: user.state,
+            message: "Email Updated",
+          });
+          //return res.render("profilePage/profile", {message: 'Email Updated'});
         }
       } else if (usersData.password) {
-        //if(usersData.password !== usersData.confirmPassword) throw "Error: Both passwords should match";
+        let p = usersData.password;
+        let pc = usersData.Cpassword;
+        if (p != pc) throw "Error: Both passwords should match";
         hashedPassword = await bcrypt.hash(usersData.password, saltRounds);
 
         const updatedInfo = await userData.updatePassword(
@@ -212,27 +230,29 @@ router
           userExists._id
         );
         if (updatedInfo) {
-          return res.render("profilePage/profile");
+          return res.render("profilePage/profile", {
+            message: "Password Updated",
+          });
         }
+      }
+    } catch (e) {
+      return res.status(500).render("profilePage/profile", { error: e });
+    }
+  }),
+  // router.route("/profile/update").patch(async (req, res) => {
+  //   const userInfo = req.body;
+
+  // });
+  router.route("/viewProfile/:id").get(async (req, res) => {
+    try {
+      if (!req.session.user) {
+        return res.redirect("/mainPage");
+      } else {
       }
     } catch (e) {
       res.status(400).json({ err: e });
     }
-  }),
-  router.route("/profile/update").patch(async (req, res) => {
-    // hajd;
-    // if
   });
-router.route("/viewProfile/:id").get(async (req, res) => {
-  try {
-    if (!req.session.user) {
-      return res.redirect("/mainPage");
-    } else {
-    }
-  } catch (e) {
-    res.status(400).json({ err: e });
-  }
-});
 //   .post(async (req, res) => {
 //     try {
 // 	if (!req.session.user) {

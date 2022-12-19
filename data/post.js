@@ -27,7 +27,7 @@ const AddPost = async (
     images: images,
     commentidArray: [],
     tagsArray: tagsArray,
-    likes: 0,
+    likes: []                        ,
     date: new Date().toLocaleDateString,
   };
   const insertInfo = await postCollection.insertOne(newPost);

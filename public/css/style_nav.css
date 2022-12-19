@@ -203,7 +203,7 @@ header::before {
   font-size: 1.8rem;
   padding: .9em 2em .9em 1em;
   border-bottom: 1px solid #5dbcee;
-  color: #ffffff;
+  color: black;
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
   -moz-transition: -moz-transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s;

@@ -9,7 +9,7 @@ body {
     width: 300px;
     margin: 5vh auto 0 auto;
     padding: 20px;
-    background-color: #54BEEB;
+    background-color: whitesmoke;
     border-radius: 4px;
     font-size: 12px;
 }
@@ -49,6 +49,7 @@ body {
 
 .input-control.success input {
     border-color: #09c372;
+    color: #09c372;
 }
 
 .input-control.error input {

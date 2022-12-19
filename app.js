@@ -125,8 +125,6 @@ app.use("/profile/update", (req, res, next) => {
   }
 });
 
-app.use()``;
-
 configRoutes(app);
 
 app.listen(3000, () => {

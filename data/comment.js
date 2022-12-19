@@ -19,8 +19,8 @@ const AddComment = async (userid, postid, comment) => {
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw "Could not add Comment";
   const newCommentid = insertInfo.insertedId;
-  const CommentAdded = await getCommentByID(newCommentid.toHexString());
-  await posts.AddCommenttoPost(postid, newCommentid.toHexString());
+  const CommentAdded = await getCommentByID(newCommentid.toString());
+  await posts.AddCommenttoPost(postid, newCommentid.toString());
   return CommentAdded;
 };
 

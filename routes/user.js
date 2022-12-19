@@ -55,9 +55,7 @@ router
       // return res.render("mainPage/login");
       if (newUser.insertedUser) res.render("mainPage/login");
     } catch (e) {
-      return res
-        .status(500)
-        .render("mainPage/register", { error: "Internal Server Error" });
+      return res.status(500).render("mainPage/register", { error: e });
     }
   });
 
@@ -76,7 +74,7 @@ router
       let email = xss(req.body.email);
       let password = xss(req.body.password);
       email = valid.checkEmail(usersData.email);
-      password = valid.checkPassword(usersData.password);
+      password = valid.checkPassword(password);
       let usernameDB = await userData.getUserByEmail(email);
       const loginUser = await userData.verifyUser(
         usersData.email,
@@ -95,24 +93,24 @@ router
           isAdmin: admin,
         };
         req.session.login = loginUser.authenticatedUser;
-        return res.redirect("/mainPage");
-      } else {
-        return res.status(401).render("mainPage/login", {
-          error: "Provide a valid username and/or password",
+        return res.render("mainPage/home", {
+          userLogin: req.session.login,
+          isAdmin: admin,
+          title: "Handouts Logged in User",
         });
       }
     } catch (e) {
       return res.status(401).render("mainPage/login", {
-        error: "Provide a valid username and/or password",
+        error: e,
       });
     }
   });
 router.route("/logout").get(async (req, res) => {
   if (req.session.user) {
+    // return res.redirect("/mainPage");
+    req.session.destroy();
     return res.redirect("/mainPage");
   }
-  req.session.destroy();
-  return res.redirect("/mainPage");
 });
 
 router

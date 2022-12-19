@@ -102,6 +102,9 @@
                 <div class="error"></div>
             </div>
             <button type="submit">Sign Up</button>
+            {{#if error}}
+              <h4>{{error}}</h4>
+            {{/if}}
         </form>
     </div>
 </body>

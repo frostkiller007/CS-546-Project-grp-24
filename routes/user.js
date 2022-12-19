@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const userData = require("../data/user.js");
+const postData = require("../data/post.js");
+
 const valid = require("../helper.js");
 const bcrypt = require("bcrypt");
 const xss = require("xss");
@@ -93,10 +95,17 @@ router
           isAdmin: admin,
         };
         req.session.login = loginUser.authenticatedUser;
+        let allPost = await postData.getAllPosts();
+
+        for (let i = 0; i < allPost.length; i++) {
+          let userInfo = await userData.getUserByUserId(allPost[i].userId);
+          allPost[i].username = userInfo.username;
+        }
         return res.render("mainPage/home", {
           userLogin: req.session.login,
           isAdmin: admin,
           title: "Handouts Logged in User",
+          allPost,
         });
       }
     } catch (e) {

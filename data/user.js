@@ -21,7 +21,7 @@ const createUser = async (
   email = valid.checkEmail(email);
   age = valid.checkAge(age);
   city = valid.checkCity(city);
-  if(password !== password2) throw 'Error: You must enter same password';
+  if (password !== password2) throw "Error: You must enter same password";
   password = valid.checkPassword(password);
 
   const usersCollection = await users();
@@ -182,13 +182,37 @@ const updatePassword = async (password, userID) => {
   return state;
 };
 
-async function addPostUser(userId, postId) { 
+async function addPostUser(userId, postId) {
   const userCollection = await users();
-  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userId) }, { $addToSet: {post: postId} });
-  if (updateInfo.modifiedCount === 0)
-  throw "Error: Can not add post to user";
-return await getUserByUserId(userId);
-};
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $addToSet: { post: postId } }
+  );
+  if (updateInfo.modifiedCount === 0) throw "Error: Can not add post to user";
+  return await getUserByUserId(userId);
+}
+
+async function updatePicture(id, profilePicture) {
+  if (arguments.length !== 2) {
+    throw "Check arguments passed";
+  }
+  if (ObjectId.isValid(id) === false) {
+    throw `Error in id`;
+  }
+  if (profilePicture.length === 0) {
+    throw "No profile picture provided";
+  }
+  if (id.length === 0) {
+    throw "No id provided";
+  }
+
+  id = ObjectId(id);
+  const userCollection = await user();
+  const inputId = await userCollection.find({ _id: id }).toArray();
+  if (inputId.length === 0) {
+    throw "No user with that id";
+  }
+}
 
 module.exports = {
   createUser,
@@ -200,5 +224,6 @@ module.exports = {
   updateCity,
   updateState,
   getUserByUserId,
-  addPostUser
+  addPostUser,
+  updatePicture,
 };

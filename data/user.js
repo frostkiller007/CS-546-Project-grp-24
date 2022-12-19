@@ -201,7 +201,7 @@ async function updatePicture(id, profilePicture) {
   }
 
   id = ObjectId(id);
-  const userCollection = await user();
+  const userCollection = await users();
   const inputId = await userCollection.find({ _id: id }).toArray();
   if (inputId.length === 0) {
     throw "No user with that id";

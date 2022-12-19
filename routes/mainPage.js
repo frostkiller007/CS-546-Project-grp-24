@@ -116,6 +116,9 @@ router.post(
       const updateProfilePicture = await updatePicture.updatePicture(
         req.session.user._id,
         profilePicture
+
+
+        
       );
       req.session.user.profilePicture = profilePicture;
       return res.redirect("/mainPage");

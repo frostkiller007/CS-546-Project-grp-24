@@ -4,6 +4,7 @@ const static = express.static(__dirname + "/public");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
+const postData = require("./data/user.js");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
 
@@ -85,15 +86,15 @@ app.post(
         throw "Only .png, .jpg and .jpeg format supproted!";
       }
       profilePicture = req.file.originalname;
-      const updateProfilePicture = await updatePicture.updatePicture(
+      const updateProfilePicture = await postData.updatePicture(
         req.session.user.id,
         profilePicture
       );
       req.session.user.profilePicture = profilePicture;
-      return res.redirect("/profile");
+      return res.redirect("/user/profile");
     } catch (error) {
       console.log(error);
-      res.status(401).redirect("/profile");
+      res.status(401).redirect("/user/profile");
       return;
     }
   }
@@ -123,6 +124,9 @@ app.use("/profile/update", (req, res, next) => {
     next();
   }
 });
+
+app.use()``;
+
 configRoutes(app);
 
 app.listen(3000, () => {

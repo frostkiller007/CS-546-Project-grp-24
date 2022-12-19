@@ -24,7 +24,7 @@ router
   .get(async (req, res) => {
     if (!req.session.user) {
       let userLogin = req.session.user;
-      return res.render("mainPage/register", { title: "Sign Up Page"});
+      return res.render("mainPage/register", { title: "Sign Up Page" });
     }
     res.redirect("/mainPage");
   })
@@ -46,7 +46,7 @@ router
       age = valid.checkAge(age);
       city = valid.checkString(city);
       password = valid.checkPassword(password);
-      if(password !== password2) throw 'Both entered password must be same';
+      if (password !== password2) throw "Both entered password must be same";
       let usernameDB = await userData.getUserByEmail(email);
       const newUser = await userData.createUser(
         username,
@@ -77,7 +77,7 @@ router
       let userLogin = true;
       return res.redirect("/mainPage");
     }
-    
+
     res.render("mainPage/login");
   })
   .post(async (req, res) => {
@@ -149,6 +149,9 @@ router
           age: user.age,
           city: user.city,
           state: user.state,
+          userLogin: req.session.login,
+          isAdmin: req.session.user.isAdmin,
+          profilePicture: req.session.user.profilePicture,
         });
       } catch (e) {
         //TODO

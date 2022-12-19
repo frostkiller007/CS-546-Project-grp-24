@@ -76,7 +76,7 @@ const getUserByUserId = async (userId) => {
 };
 const getUserByEmail = async (email) => {
   email = valid.checkEmail(email);
-
+  email = email.toLowerCase();
   const usersCollection = await users();
   const user = await usersCollection.findOne({ email: email });
   if (user === null) throw "There is no user with the provided email";
@@ -86,7 +86,8 @@ const getUserByEmail = async (email) => {
 };
 
 const verifyUser = async (email, password) => {
-  email = valid.checkEmail(email, "email");
+  email = valid.checkEmail(email);
+  email = email.toLowerCase();
   password = valid.checkPassword(password, "password");
 
   let ret;
@@ -187,7 +188,7 @@ const updatePassword = async (password, userID) => {
   );
 
   if (updateInfo.modifiedCount === 0) throw " password can not be updated";
-  let ret =updateInfo.modifiedCount;
+  let ret = updateInfo.modifiedCount;
   return password;
 };
 
@@ -235,5 +236,5 @@ module.exports = {
   getUserByUserId,
   addPostUser,
   updatePicture,
-  updateEmail
+  updateEmail,
 };

@@ -30,21 +30,27 @@ router
     // const usersData = req.body;
     //TODO: validation
     try {
-      username = xss(req.body.username);
-      email = xss(req.body.email);
-      age = xss(req.body.age);
-      city = xss(req.body.city);
-      state = xss(req.body.state);
-      postID = xss(req.body.postID);
+      let username = xss(req.body.username);
+      let email = xss(req.body.email);
+      let age = xss(req.body.age);
+      let city = xss(req.body.city);
+      // state = xss(req.body.state);
+      // postID = xss(req.body.postID);
       password = xss(req.body.password);
+      password2=xss(req.body.password2);
+      valid.checkUserName(username);
+      valid.checkEmail(email);
+      valid.checkAge(age);
+      valid.checkCity(city);
+      valid.checkPassword(password);
+      valid.checkPassword(password2);
       const newUser = await userData.createUser(
         username,
         email,
         age,
         city,
-        state,
-        postID,
-        password
+        password,
+        password2
       );
       // if(newUser){
       //   res.status(200).render('mainPage/login',{title:'Login'});
@@ -73,7 +79,7 @@ router
       let usersData = req.body;
       let email = xss(req.body.email);
       let password = xss(req.body.password);
-      email = valid.checkEmail(usersData.email);
+      email = valid.checkEmail(email);
       password = valid.checkPassword(password);
       let usernameDB = await userData.getUserByEmail(email);
       const loginUser = await userData.verifyUser(

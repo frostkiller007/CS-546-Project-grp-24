@@ -40,7 +40,6 @@ const createUser = async (
     email: email,
     age: age,
     city: city,
-    //state: state,
     post: [],
     password: hashedPassword,
   };

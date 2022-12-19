@@ -100,7 +100,7 @@ router.post("/createPost", upload.single("picture"), async (req, res) => {
   let username = req.session.user.username;
   var finalImg = {
     contentType: "image/jpg",
-    image: Buffer.from(encode_image, "base64"),
+    image: encode_image
   };
 
   const addPost = await postData.AddPost(

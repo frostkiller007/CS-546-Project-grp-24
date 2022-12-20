@@ -1,17 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const xss = require("xss");
-// router.route("/").get(async (req, res) => {});
+const reportData = require('../data/report');
+const postData = require('../data/post');
+const { response } = require("express");
+
 
 // CHECK FOR ERRORS
 
-router.route("/").get(async (req, res) => {
+router.route("/:id/reporting").get(async (req, res) => {
   try {
     let userRegister = null;
-    if (!req.session.user) {
-      res.render("mainPage/report", { login: req.session.login });
+    if (req.session.user) {
+      res.render("mainPage/reports", { login: req.session.login });
+      req.session.reportId = xss(req.params.id);
+      console.log(req.session.reportId);
     }
-    userRegister = await userData.getUserById(req.session.user.username);
+
   } catch (e) {
     if (e.code) res.status(e.code).json({ error: e.err });
     else res.status(400).json({ error: e });
@@ -19,24 +24,33 @@ router.route("/").get(async (req, res) => {
 });
 router.route("/form").post(async (req, res) => {
   try {
-    const userId = req.session.user;
+    const userId = req.session.user.id;
+    console.log(userId+"uid")
+    const postId = req.session.reportId;
+    console.log(postId+"pid")
     if (!req.session.user) {
       return res.status(400).render("error", { error: "error" });
     } else {
-      const post = await postData.getPostById(postId);
+      const post = await postData.getPostByID(postId.toString());
       
-        let reason = req.body.reason;
+        let reason = xss(req.body.reason);
+        console.log(reason);
+        let reasonArr=[];
         if(typeof reason == "string")
         {
-          reason=[reason];
+          reasonArr.push(reason);
         }
-        await reportData.addReport(userId,postId,reason);
-        res.render('reports/form',{success:"Report successfully submitted!", userLogin,'reported-post':post.topic, 'postId': postId});
-        return;
+        console.log(reasonArr+"arr")
+        const result = await reportData.AddReport(userId.toString(),postId.toString(),reasonArr);
+        console.log(result);
+        req.session.reportId=null;
+        
+        res.redirect("/mainPage");
+        
     }}
     catch(e)
     {
-      res.render('reports/form',{message:e, userLogin,'reported-post':post.topic, 'postId': postId});
+      console.log(e);
     } 
 });
 

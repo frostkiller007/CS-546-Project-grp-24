@@ -16,7 +16,6 @@ router
       res.status(500).send(e);
     }
   })
-
   .post(async (req, res) => {
     try {
       if (!req.session.user) {
@@ -28,7 +27,7 @@ router
       let userid = xss(req.body.userid);
       let postid = xss(req.body.postid);
       let comment = xss(req.body.comment);
-      console.log(userid);
+      // console.log(userid);
       helper.idcheck(userid);
       helper.idcheck(postid);
       helper.contentcheck(comment);
@@ -41,20 +40,22 @@ router
 
 router
   .route("/:id")
-  .get(async (req, res) => {
-    try {
-      req.params.id = helper.idcheck(req.params.id);
-    } catch (e) {
-      res.status(400).send("Invalid id");
-    }
-    try {
-      const commentDetails = await commentData.getCommentByID(req.params.id);
-      res.json(commentDetails);
-    } catch (e) {
-      res.status(404).json("Comment not found");
-    }
+  .post(async (req, res) => {
+    let id = req.params.id;
+    let commt = req.body.comment;
+    await data.comment.AddComment(req.session.user.id, id, commt)
+    // try {
+    //   req.params.id = helper.idcheck(req.params.id);
+    // } catch (e) {
+    //   res.status(400).send("Invalid id");
+    // }
+    // try {
+    //   const commentDetails = await commentData.getCommentByID(req.params.id);
+    //   res.json(commentDetails);
+    // } catch (e) {
+    //   res.status(404).json("Comment not found");
+    // }
   })
-
   .delete(async (req, res) => {
     try {
       req.params.id = helper.idcheck(req.params.id);

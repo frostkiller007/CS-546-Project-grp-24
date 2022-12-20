@@ -22,7 +22,7 @@ const AddReport = async(userid, postid, issue) => {
     helper.idcheck(postid);
     helper.arraycheck(issue);
     const ReportCollection = await reports();
-    const FindReport = await ReportCollection.findOne({_id: id});
+    const FindReport = await ReportCollection.findOne({userid:userid,postid:postid });
     if (FindReport == null){
         let newReport = {
         userid: userid,
@@ -34,7 +34,7 @@ const AddReport = async(userid, postid, issue) => {
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
       throw 'Could not add Report';
     const newReportid = insertInfo.insertedId;
-    const ReportAdded = await this.getReportByID(newReportid);
+    const ReportAdded = await getReportByID(newReportid.toString());
     return ReportAdded;
     }
 }

@@ -14,14 +14,13 @@ const createUser = async (
   city,
   //state,
   // postID,
-  password,
-  password2
+  password
 ) => {
   userName = valid.checkUserName(userName);
   email = valid.checkEmail(email);
   age = valid.checkAge(age);
   city = valid.checkCity(city);
-  if(password !== password2) throw 'Error: You must enter same password';
+
   password = valid.checkPassword(password);
 
   const usersCollection = await users();
@@ -92,26 +91,23 @@ const verifyUser = async (email, password) => {
   let ret;
   const usersCollection = await users();
   const userExists = await usersCollection.findOne({ email: email });
-  try {
-    if (userExists) {
-      compareToDb = await bcrypt.compare(password, userExists.password);
-      if (compareToDb) {
-        ret = { id: userExists._id.toString(), authenticatedUser: true };
-      } else {
-        throw "Error: Either the username or password is invalid";
-      }
+
+  if (userExists) {
+    compareToDb = await bcrypt.compare(password, userExists.password);
+    if (compareToDb) {
+      ret = { id: userExists._id.toString(), authenticatedUser: true };
     } else {
-      throw "Error: Either the username or password is invalid";
+      throw "Either the username or password is invalid";
     }
-  } catch (e) {
-    return false;
+  } else {
+    throw " Either the username or password is invalid";
   }
   return ret;
 };
 
 const updateUsername = async (username, userID) => {
   username = valid.checkUserName(username);
-  if (!userID) throw "Error: You must provide userID";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
     throw "The provided userID not a valid objectID";
 
@@ -121,15 +117,30 @@ const updateUsername = async (username, userID) => {
     { $set: { username: username } }
   );
 
-  if (updateInfo.modifiedCount === 0)
-    throw "Error: username can not be updated";
+  if (updateInfo.modifiedCount === 0) throw " username can not be updated";
 
   return username;
+};
+const updateEmail = async (email, userID) => {
+  email = valid.checkEmail(email);
+  if (!userID) throw " You must provide userID";
+  if (!ObjectId.isValid(userID))
+    throw "The provided userID not a valid objectID";
+
+  const userCollection = await users();
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $set: { email: email } }
+  );
+
+  if (updateInfo.modifiedCount === 0) throw " email can not be updated";
+
+  return email;
 };
 
 const updateState = async (state, userID) => {
   state = valid.checkString(state);
-  if (!userID) throw "Error: You must provide userID";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
     throw "The provided userID not a valid objectID";
 
@@ -139,14 +150,14 @@ const updateState = async (state, userID) => {
     { $set: { state: state } }
   );
 
-  if (updateInfo.modifiedCount === 0) throw "Error: state can not be updated";
+  if (updateInfo.modifiedCount === 0) throw " state can not be updated";
 
   return state;
 };
 
 const updateCity = async (city, userID) => {
   city = valid.checkString(city);
-  if (!userID) throw "Error: You must provide userID";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
     throw "The provided userID not a valid objectID";
 
@@ -156,18 +167,17 @@ const updateCity = async (city, userID) => {
     { $set: { city: city } }
   );
 
-  if (updateInfo.modifiedCount === 0) throw "Error: city can not be updated";
+  if (updateInfo.modifiedCount === 0) throw " city can not be updated";
 
   return state;
 };
 
 const updatePassword = async (password, userID) => {
-  if (!password) throw "Error: Must provide password";
-  if (typeof password !== "string")
-    throw "Error: password must be of type string";
-  if (!userID) throw "Error: You must provide userID";
+  if (!password) throw " Must provide password";
+  if (typeof password !== "string") throw " password must be of type string";
+  if (!userID) throw " You must provide userID";
   if (!ObjectId.isValid(userID))
-    throw "Error: The provided userID not a valid objectID";
+    throw " The provided userID not a valid objectID";
   hashedPassword = await bcrypt.hash(password, saltRounds);
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne(
@@ -175,19 +185,42 @@ const updatePassword = async (password, userID) => {
     { $set: { password: password } }
   );
 
-  if (updateInfo.modifiedCount === 0)
-    throw "Error: password can not be updated";
-
-  return state;
+  if (updateInfo.modifiedCount === 0) throw " password can not be updated";
+  let ret =updateInfo.modifiedCount;
+  return password;
 };
 
-async function addPostUser(userId, postId) { 
+async function addPostUser(userId, postId) {
   const userCollection = await users();
-  const updateInfo = await userCollection.updateOne({ _id: ObjectId(userId) }, { $addToSet: {post: postId} });
-  if (updateInfo.modifiedCount === 0)
-  throw "Error: Can not add post to user";
-return await getUserByUserId(userId);
-};
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $addToSet: { post: postId } }
+  );
+  if (updateInfo.modifiedCount === 0) throw "Error: Can not add post to user";
+  return await getUserByUserId(userId);
+}
+
+async function updatePicture(id, profilePicture) {
+  if (arguments.length !== 2) {
+    throw "Check arguments passed";
+  }
+  if (ObjectId.isValid(id) === false) {
+    throw `Error in id`;
+  }
+  if (profilePicture.length === 0) {
+    throw "No profile picture provided";
+  }
+  if (id.length === 0) {
+    throw "No id provided";
+  }
+
+  id = ObjectId(id);
+  const userCollection = await user();
+  const inputId = await userCollection.find({ _id: id }).toArray();
+  if (inputId.length === 0) {
+    throw "No user with that id";
+  }
+}
 
 module.exports = {
   createUser,
@@ -199,5 +232,7 @@ module.exports = {
   updateCity,
   updateState,
   getUserByUserId,
-  addPostUser
+  addPostUser,
+  updatePicture,
+  updateEmail
 };

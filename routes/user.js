@@ -206,7 +206,7 @@ router
         );
         if (updatedInfo) {
           const user = await userData.getUserByUsername(usersData.username);
-          return res.redirect("/user/profile");
+         return res.redirect("/user/profile");
         //   return res.render("profilePage/profile", {
         //   username: user.username,
         //   email: user.email,
@@ -214,7 +214,7 @@ router
         //   city: user.city,
         //   state: user.state, message: 'Email Updated'
         // });
-         //return res.render("profilePage/profile", {message: 'Email Updated'});
+        //  return res.render("profilePage/profile", {message: 'Email Updated'});
         }
       } else if (usersData.password) {
         let p =usersData.password; let pc =usersData.Cpassword;
